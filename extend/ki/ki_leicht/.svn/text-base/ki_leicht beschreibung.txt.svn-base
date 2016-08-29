@@ -1,0 +1,148 @@
+
+===========================
+Beschreibung fuer ki_leicht
+===========================
+
+Im Ordner ki_leicht sind Klassen mit Funktionen enthalten, die das Verhalten von leichten Computer-Spielern 
+steuern. Die Dateien holeDaten.php und init.php sind fuer das Verhalten uninteressant, sie sind nur fuer das 
+Einbinden von ki_leicht in Skrupel wichtig.
+Zu den einzelnen Klassen:
+
+----------
+ki_leicht:
+----------
+Diese Klasse erbt von ki_basis und setzt alle Informationen fuer die statische eigenschaften-Klasse. Ausserdem 
+werden dort Initialisierungs-Funktionen aufgerufen, die Informationen aus der Datenbank fuer die KI ausliest.
+Die Funktion berechneZug() wurde implementiert und ruft die einzelnen Verwaltungs-Funktionen der Klassen von 
+ki_leicht auf.
+
+----------------
+planeten_leicht:
+----------------
+Erbt von planeten_basis und implementiert verwaltePlaneten(). Es werden Fabriken, Minen und ab einer bestimmten 
+Rundenanzahl auch P.D.S. gebaut. Auto-Minenbau wird nicht benutzt, da sich Minen irgendwann nicht mehr lohnen. 
+Ausserdem werden die 3 orbitalen Systeme Megafabrik und Bank gebaut (in dieser Reihenfolge).
+
+---------------
+politik_leicht:
+---------------
+Erbt von politik_basis und implementiert verwaltePolitikAnfragen(). Es werden nur Politik-Anfragen angenommen, 
+bei denen der Sender der Anfrage staerker ist als der KI-Spieler und wenn es mindestens einen Spieler gibt, mit 
+dem die KI kein Buendnis hat.
+
+----------------
+frachter_leicht:
+----------------
+Erbt von frachter_basis und implementiert verwalteFrachter(). Frachter kolonisieren, falls es kein anderes 
+kolonisierendes Schiff gibt oder falls alle Planeten in einer Ernte-Route sind. Falls ein Frachter gebaut wurde, 
+wird erst ueberprueft, ob schon andere kolonisierende Frachter unterwegs sind und es ueberhaupt Sinn macht, 
+weiter zu kolonisieren. Falls nicht, wird eine Ernte-Route gesetzt (falls nicht alle Planeten schon in einer 
+Route sind, ansonsten wird dann weiter kolonisiert). Dabei werden auch Planeten mit einbezogen, auf denen eine 
+Sternenbasis gebaut werden soll. Dabei wird versucht, alle Planeten mit Sternenbasen und Planeten mit geplanter 
+Sternenbasis mit gleich vielen Frachtern zu beliefern.
+Ausserdem koennen Frachter vor feindlichen Schiffen fliehen (sie fliegen einfach in die entgegengesetzt Richtung, 
+aus der die feindlichen Schiffe kommen) und sie sind in der Lage, Wurmloecher und feindliche  Minenfelder zu 
+umfliegen.
+Aggressivitaet wird auf 0 und Taktik wird auf Defensiv gesetzt.
+
+--------------
+jaeger_leicht:
+--------------
+Erbt von jaeger_basis und implementiert verwalteJaeger(). Jaeger fliegen zuerst zu Feind-Schiffen, die Planeten 
+oder Schiffe der KI angreifen (wenn sie nicht zu weit weg sind). Falls keine in der Naehe sind, werden Planeten 
+angeflogen, von denen bekannt ist, dass dort der Feind angesiedelt ist. Falls auch keine solchen Planeten in der 
+Naehe sind, werden sichtbare Feind-Schiffe angeflogen. Falls auch keine solchen Schiffe in der Naehe sind, wird 
+entweder ein noch nicht erkundetes (und von keinem anderen Schiff gerade angeflogenes) sichtbares Wurmloch 
+angeflogen oder ein Planet angeflogen, der irgendwo auf der Karte ist aber nicht zu nahe an den eigenen Planeten 
+ist.
+Fliegt ein Jaeger auf einen feindlichen Planeten zu, so wird das Planeten-Bombardement aktiviert oder (falls 
+vorhanden) virale Invasion. Jaeger aktivieren (falls vorhanden) ihren Destabilisator, wenn sie an einem 
+feindlichen Planeten sind.
+Hat ein Jaeger Schaden erlitten, und sind Feind-Schiffe nicht zu weit nah oder zu weit weg, so wird ein Minenfeld 
+gelegt (falls genug Projektile vorhanden sind). Feindliche Minenfelder koennen auch geraeumt werden, falls der 
+Jaeger Hangars hat, das Minenfeld nicht zu fern ist und Feind-Schiffe nicht zu weit weg sind.
+Hat der Jaeger einen Subraum-Verzerrer, sind keine eigenen Schiffe in der Naehe und sind Feind-Schiffe in der 
+Naehe, so wird dieser aktiviert.
+Tarnung wird nur aktiviert, falls das Schiff von feindlichen Spielern gesehen werden kann, es aber nicht zu nahe 
+an einem Schiff oder einem Planeten ist.
+Die Aggressivitaet von Jaegern wird normalerweise auf 9 und die Taktik auf Aggressiv gesetzt. Gibt ein Jaeger 
+einem anderen Schiff Begleitschutz, so wird die Aggressivitaet auf 8 gesetzt, damit das begleitetete Schiff 
+zuerst angegriffen wird.
+
+--------------
+scouts_leicht:
+--------------
+Erbt von scouts_basis und implementiert verwalteScouts(). Scouts fliegen feindliche Schiffe an und falls keines 
+in der Naehe ist, wird ein Wurmloch oder die Karte erkundet (genau wie Jaeger). Scouts achten nicht auf ihren 
+Schaden und aktivieren keine Spezialmissionen (ausser Sprungtriebwerke). Ausserdem nutzen sie keinen Geleitschutz.
+Aggressivitaet und Taktik entspricht denen der Jaeger.
+
+----------------------
+spezialschiffe_leicht:
+----------------------
+Erbt von schiffe_leicht. Es werden Schiffe mit Subpartikelcluster (Cluster-Schiffe), Quarksreorganisatoren 
+(Quark-Schiffe), Cybernrittnikk (Cyber-Schiffe), warmen und kalten Terraformer (Terra-Schiffe), viraler Invasion 
+(Virale-Schiffe) und Struktur-Taster (Taster-Schiffe) verwaltet:
+- Cluster-Schiffe werden aktiviert, wenn genug Lemin auf dem Planeten ist. Falls nicht genug Lemin auf dem 
+  Planeten ist, wird nur deaktiviert, wenn auch nicht genug Resourcen auf dem Planeten ist (fuer moegliche 
+  Quark-Schiffe).
+- Quark-Schiffe werden nur aktiviert, wenn nicht genug Lemin auf den Planeten ist.
+- Cyber-Schiffe werden immer aktiviert.
+- Terra-Schiffe werden nur aktiviert, wenn auf dem Planeten, an dem sie sind, die Temperatur gemaess ihrem 
+  Terraformer der optimalen Temperatur der Rasse angepasst werden kann. Ist der Planet, an dem sie sind, an die 
+  optimale Temperatur angepasst, so fliegen sie zum Planeten, der am heissesten/kaeltesten ist. Ist kein Planet 
+  fuer das Terra-Schiff da, der angepasst werden kann, so wird dessen Terraformer deaktiviert und das Schiff 
+  bleibt fuers erste dort.
+- Virale-Schiffe werden eingesetzt, um Planeten mit unerwuenschter Dominanter Spezies von diesen zu befreien. Ist 
+  im Moment keiner solcher Planet bekannt, verhaelt sich das Schiff wie ein Jaeger. Falls irgendwann wieder ein 
+  solcher Planet gefunden wird, wird das naechst-gelegene Virale-Schiff geholt, damit der Planet gesaeubert wird.
+  Es werden nur solche Planeten gesaeubert, die auch eine fuer die Rasse gute Temperatur aufweissen.
+- Taster-Schiffe verhalten sich genau wie Scouts. Da es Taster-Schiffe bisher nur bei den Kuatoh gibt, werden 
+  diese gesondert behandelt: Nur eine bestimmter Prozent-Satz und eine maximal Anzahl werden von den gebauten 
+  Schiffen mit Strukturtaster auch wirklich als Taster-Schiffe behandelt, die restlichen werden als Frachter 
+  behandelt. So wird gewaehrleistet, dass die Kuatoh Erkunden, aber auch expandieren.
+
+--------------------
+geleitschutz_leicht:
+--------------------
+Erbt von geleitschutz_basis und implementiert verwalteGeleitschutz(). Geleitschutz-Gruppen sind Gruppen von 
+Jaegern, die sich nahe genug sind und wo ein Jaeger von den anderen Jaegern Geleitschutz bekommt. Dabei wird 
+nur Geleitschutz gegeben, wenn die anderen Jaeger vom Techlevel Geleitschutz geben koennen und nur soviele 
+Jaeger, wie es die Waffensystem des Geleitschutz-bekommenden Jaegers zulassen.
+Sind nicht alle Jaeger der Gruppe auf einer Position, wartet das "Leit-Schiff" auf die anderen (wenn sie genug 
+Lemin haben). Sind dann alle Jaeger einer Gruppe auf denselben Koordinaten, fliegt das Leit-Schiff wie eine 
+normales Schiff weiter. Die begleitenden Jaeger koennen jederzeit unterwegs Tanken. Sind diese wieder betankt 
+und ist das Leit-Schiff noch in der Naehe, wartet das Leit-Schiff wieder.
+Einem Jaeger wird ausserdem nur Geleitschutz gegeben, wenn es genug Lemin hat.
+
+-----------------------
+basen_schiffbau_leicht:
+-----------------------
+Erbt von basen_schiffbau_basis und implementiert baueNeuesSchiff(). Schiffe werden nach folgender Prioritaet 
+gebaut: Quark-Schiff, Cluster-Schiff, Cyber-Schiff, Frachter, Taster-Schiff, Terra-Warm, Terra-Kalt, 
+Virales-Schiff, Scout, Jaeger. Es wird also ein Jaeger mit niedrigster Prioritaet gebaut.
+Dabei wird pro Planet hoechstens ein Quark-, Cluster- und Cyber-Schiff gebaut. Frachter werden nur gebaut, wenn 
+es genug Planeten fuer sie gibt. Taster-Schiffe werden in Abhaengigkeit von der Anzahl aller Schiffe gebaut und 
+nur ein bestimmter Prozent-Satz aller Taster-Schiffe wird wirklich aktiviert. Terra-Schiffe werden nur nicht zu 
+viele gebaut und es wird nur ein neues gebaut, wenn ein gewisser Bedarf vorhanden ist. Virale-Schiffe werden auch 
+nicht zu viele gebaut und auch nur, wenn es Planeten fuer Virale-Schiffe gibt. Scouts werden nicht zu viele und 
+nicht zu viele in Abhaengikeit von allen anderen Schiffen gebaut. Ausserdem werden keine Scouts mehr gebaut, 
+wenn nicht genug Jaeger vorhanden sind. Jaeger werden nur gebaut, wenn der Planet, an dem er gebaut werden soll, 
+nicht auf die naechste Rumpf-Stufe fuer die Sternenbasis spart.
+
+--------------------
+sternenbasen_leicht:
+--------------------
+Erbt von sternenbasen_basis und implementiert ermittleNeuenBasenPlaneten(), verwalteBasen() und 
+verwalteSchiffeOhneLemin(). Ein Planet, wo eine neue Sternenbasis gebaut werden soll, ist der Planet, der am 
+meisten Kolonisten hat und genuegend Abstand zu allen anderen Sternenbasen-Planeten hat.
+Schiffe, die nicht genug Lemin haben, sich eine Runde lang nicht bewegt haben und die nicht an einem Planeten 
+sind, an dem genug Lemin ist, werden mit einer Raumfalte mit etwas Lemin versorgt. Ein Schiff erhaelt nur eine 
+Lemin-Raumfalte.
+Sternenbasen-Planeten oder Planeten, an denen eine Sternenbasis gebaut werden soll, werden durch die anderen 
+Sternenbasen mit Resourcen versorgt (mit allem ausser Vorraeten). Dabei erhaelt jeder dieser Planeten maximal 
+2 Raumfalten gleichzeitig. Ein Sternenbasen-Planet sendet seine Resourcen nur, wenn noch genug fuer den Planeten 
+uebrig bleibt und wenn auf dem zu beliefernden Planeten nicht zu viele von den jeweiligen Resourcen vorhanden ist.
+Von jeder Sternenbasis wird zuerst versucht, die Lemin-armen Schiffe zu versorgen. Danach wird jede Basis 
+erweitert und danach wird versucht, ein Schiff zu bauen. Eine neue Sternenbasis wird nur versucht gebaut, wenn 
+alle anderen voll ausgebaut sind.

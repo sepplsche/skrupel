@@ -1,0 +1,106 @@
+
+==========================
+Beschreibung fuer ki_basis
+==========================
+
+Der Ordner ki_basis enthaelt viele Klassen mit Funktionen, die das Grundgeruest fuer alle KIs bilden. Von diesen 
+Klassen kann/sollte geerbt werden, wenn eine KI entwickelt wird, sodass die in den Basis-Klassen bereitgestellten 
+Funktionen auch in den neuen Klassen verfuegbar sind. Die Dateien berechneKI, kiEinrichten, spielerAuswahlKI, 
+spielLoeschenKI und zugendeKI sind fuer das Verhalten der KI eher uninteressant, da sie nur die Schnittstelle 
+zu Skrupel bilden.
+Zu den einzelnen Klassen:
+
+---------
+ki_basis:
+---------
+Enthaelt viele Funktionen zu den Basis-Aufgaben einer KI. Im Konstruktor wird die statische Klassen eigenschaften 
+initialisiert. Ausserdem leistet die Klasse folgendes:
+- Sammelt grundlegende Informationen wie die Rasse des KI-Spielers, die aktuelle Spiel-Runde usw.
+- Sammelt gurndlegende Informationen des KI-Spielers wie die Kolonien, die Planeten mit Sternenbasen usw.
+- Sammelt Informationen zu den Gegnern wie deren Spieler-Nummern (1-10), deren sichtbaren Schiffe und 
+  Planeten usw.
+- Enthaelt Funktionen zur Verwaltung der KI-Erweiterung wie alle KI-Ordner finden, pruefen, ob alle menschlichen 
+  Spieler gezogen haben usw.
+- Enthaelt grundlegende mathematische Funktionen wie Streckenberechnung, Vektor-Normierung usw.
+- Enthaelt Weg-Findungs-Funktionen zum naechsten Planeten, zum naechsten unbewohnten Planeten oder einfach zu 
+  einem naechsten Ziel usw.
+Von dieser Klasse sollten Klassen erben, die den Kern einer neuen KI bilden. Somit muss die Funktion 
+berechneZug() implementiert werden.
+
+--------------
+eigenschaften:
+--------------
+Enthaelt alle gesammelten Daten der KI (aktueller Tick, Rasse des KI-Spielers, eigene Kolonien und Schiffe usw.). 
+In den enthaltenen Objekten sind weitere Daten gespeichert, die in den von ki_basis erbenden Klassen definiert 
+werden (zb. die maximalen Ausbaustufen von Sternenbasen oder wieviele Kolonisten fuer eine neue Kolonie angedacht 
+sind usw.).
+
+---------------
+planeten_basis:
+---------------
+Enthaelt Funktionen zum Bauen von orbitalen System und eine abstrakte Funktion, in der die Verwaltung der Planeten 
+statt findet. Von dieser Klasse sollte fuer die Planeten-Verwaltung geerbt werden.
+
+--------------
+politik_basis:
+--------------
+Enthaelt grundlegende Funktionen zur Verwaltung von politischen Anfragen sowie eine abstrakte Funktion zum 
+Verwalten dieser. Von dieser Klasse sollte fuer die Politik-Verwaltung geerbt werden.
+
+--------------
+schiffe_basis:
+--------------
+Enthaelt grundlegende Funktionen fuer alle moeglichen Schiffe wie fliegen, tanken, Frachtraum leeren und 
+Funktionen zum Bestimmen des Typs eines Schiffs (Frachter, Jaeger, Cluster-Schiff usw.).
+Diese Klasse sollte von allen Klassen geerbt werden, die was mit Schiffen zu tun haben.
+
+---------------
+frachter_basis:
+---------------
+Enthaelt grundlegende Funktionen fuer Frachter wie Kolonisieren, zum naechsten unbewohnten Planeten fliegen oder 
+grundlegende Routen-Verwaltung. Ausserdem gibt es zwei abstrakte Funktionen zur Verwaltung von Frachtern.
+Von dieser Klassen sollten Klassen erben, die mit Frachtern zu tun haben.
+
+-------------
+jaeger_basis:
+-------------
+Enthaelt im Moment nur abstrakte Funktionen zur Verwaltung und zum Fliegen von Jaegern. Von dieser Klasse 
+sollten andere Klassen erben, die sich mit Jaegern beschaeftigen.
+
+-------------
+scouts_basis:
+-------------
+Enthaelt im Moment nur abstrakte Funktionen zur Verwaltung und zum Fliegen von Scouts. Von dieser Klasse 
+sollten andere Klassen erben, die sich mit Scouts beschaeftigen.
+
+-------------------
+geleitschutz_basis:
+-------------------
+Enthaelt grundlegende Funktionen zur Verwaltung von Geleitschutz-Gruppen von Schiffen wie das Pruefen, ob ein 
+Schiff einem anderen Schiff Geleitschutz bieten kann oder das Pruefen, ob ein Schiff Geleitschutz gibt usw.
+Klassen, die von dieser Klasse erben, sollten sich mit Geleitschutz beschaeftigen und muessen eine Funktion zur 
+Verwaltung von Geleitschutz-Gruppen implementieren.
+
+------------------
+wurmloecher_basis:
+------------------
+Enthaelt statische Funktionen zum Ermittelt und Verwalten von Wurmloechern. Mit diesen statischen Funktionen wird 
+die Tabelle skrupel_ki_objekte verwaltet und aktualisiert. So werden gesehene, bekannte stabile und bekannte 
+instabile Wurmloecher dort eingetragen/aktualisiert und von dort ausgelesen. Diese Klasse ist also das Herz des 
+Wurmloch-Systems.
+
+----------------------
+basen_schiffbau_basis:
+----------------------
+Enthaelt grundlegende statische Funktionen zum Bau von Schiffen. Hier werden die grundlegenden Berechnungen 
+vorgenommen, ob ein Schiff mit den Resourcen des Planeten gebaut werden kann und wenn ja, wird hier auch der 
+Bau-Auftrag in die Datenbank aufgenommen.
+Von dieser Klasse sollten Klassen erben, die sich mit dem Bau von Schiffen beschaeftigen.
+
+-------------------
+sternenbasen_basis:
+-------------------
+Enthaelt grundlegende Funktionen zur Verwaltung und zum Bau von Sternenbasen wie das Erweitern der Tech-Stufen der
+Basen, das Versenden von Raumfalten oder das Bauen einer neue Sternenbasis. In dieser Klasse werden nur 
+Sternenbasen beruecksichtigt und keine anderen Typen von Basen wie Kriegsbasen.
+Von dieser Klasse sollten Klassen erben, die sich mit Sternenbasen im allgemeinen befassen.
