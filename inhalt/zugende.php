@@ -384,9 +384,9 @@ if ($fuid==51) {
         @mysql_query("UPDATE $skrupel_spiele SET lasttick='$lasttick',spieler_1_zug=0,spieler_2_zug=0,spieler_3_zug=0,spieler_4_zug=0,spieler_5_zug=0,spieler_6_zug=0,spieler_7_zug=0,spieler_8_zug=0,spieler_9_zug=0,spieler_10_zug=0 WHERE sid='$sid';");
 
         $main_verzeichnis = '../';
-		include('inc.zugberechnen.php');
-        include('inc.zugberechnen.routestarten.php');
-        include('inc.zugberechnen.rest.php');
+		include('inc.zugberechnen.init.php');
+        include('inc.zugberechnen.step1.php');
+        include('inc.zugberechnen.step2.php');
     }
     ?>
     <script language=JavaScript>

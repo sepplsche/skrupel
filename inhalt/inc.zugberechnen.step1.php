@@ -1,4 +1,67 @@
 <?php
+///////////////////////////////////////////////////////////////////////////////////////////////ROUTESTARTEN ANFANG
+$zeiger = mysql_query("SELECT * FROM $skrupel_schiffe where flug=0 and status=2 and routing_status=2 and spiel=$spiel order by id");
+$schiffanzahl = mysql_num_rows($zeiger);
+if ($schiffanzahl>=1) {
+    for  ($i=0; $i<$schiffanzahl;$i++) {
+        $ok = mysql_data_seek($zeiger,$i);
+        $array = mysql_fetch_array($zeiger);
+
+        $besitzer=$array["besitzer"];
+        $volk=$array["volk"];
+        $shid=$array["id"];
+        $name=$array["name"];
+        $bild_gross=$array["bild_gross"];
+        $routing_id=$array["routing_id"];
+        $routing_koord=$array["routing_koord"];
+        $routing_schritt=$array["routing_schritt"];
+        $routing_warp=$array["routing_warp"];
+        $routing_mins=$array["routing_mins"];
+        $routing_mins_temp=explode(":",$routing_mins);
+        $mins=$routing_mins_temp[$routing_schritt];
+        $mins_cantox=substr($mins,0,1);
+        $mins_vorrat=substr($mins,1,1);
+        $mins_lemin=substr($mins,2,1);
+        $mins_min1=substr($mins,3,1);
+        $mins_min2=substr($mins,4,1);
+        $mins_min3=substr($mins,5,1);
+        $leuts_kol=(int)substr($mins,7,7);
+        $leuts_lbt=(int)substr($mins,14,4);
+        $leuts_sbt=(int)substr($mins,18,4);
+        $frachtraum=$array["frachtraum"];
+        $leichtebt=$array["leichtebt"];
+        $schwerebt=$array["schwerebt"];
+        $fracht_leute=$array["fracht_leute"];
+        $fracht_cantox=$array["fracht_cantox"];
+        $fracht_vorrat=$array["fracht_vorrat"];
+        $fracht_min1 = $array["fracht_min1"];
+        $fracht_min2 = $array["fracht_min2"];
+        $fracht_min3 = $array["fracht_min3"];
+        $voll_laden=substr($mins,6,1);
+
+        if(($voll_laden!=1)or($mins_vorrat==1)or($mins_min1==1)or($mins_min2==1)or($mins_min3==1)or($leuts_kol==1)or($leuts_kol>2)or($leuts_lbt==1)or($leuts_lbt>2)or($leuts_sbt==1)or($leuts_sbt>2)){
+             if(($voll_laden!=1)or((round(($fracht_leute/100)+($leichtebt*0.3)+($schwerebt*1.5)+0.5)+$fracht_vorrat+$fracht_min1+$fracht_min2+$fracht_min3)>=$frachtraum)){
+                $routing_points_temp=explode("::",$routing_koord);
+                if ($routing_schritt==count($routing_points_temp)-2) {
+                    $routing_schritt=0;} else {$routing_schritt++;
+                }
+                $routing_points=explode(":",$routing_points_temp[$routing_schritt]);
+                $routing_id_temp=explode(":",$routing_id);
+                $zielx=$routing_points[0];
+                $ziely=$routing_points[1];
+                $warp=$routing_warp;
+                $zielid=$routing_id_temp[$routing_schritt];
+                $zeigertemp = mysql_query("update $skrupel_schiffe set flug=2,warp=$warp,zielx=$zielx,ziely=$ziely,zielid=$zielid,routing_schritt=$routing_schritt where id=$shid");
+            } else {
+                $zeigertemp = mysql_query("update $skrupel_schiffe set flug=0,warp=0,zielx=0,ziely=0,zielid=0 where id=$shid");
+            }
+        } else {
+            neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['flug'][9],array($name));
+            $zeigertemp = mysql_query("update $skrupel_schiffe set flug=0,warp=0,zielx=0,ziely=0,zielid=0,routing_schritt=0,routing_koord='',routing_warp=0,routing_mins='',routing_id='',routing_tank=0,routing_status=0 where id=$shid");
+        }
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////ROUTESTARTEN ENDE
 ///////////////////////////////////////////////////////////////////////////////////////////////MINENAKTION LOESCHEN BEI BEWEGUNG ANFANG
 
 if ($module[2]) {
@@ -806,11 +869,7 @@ if ($schiffanzahl>=1) {
         }
     }
 }
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////FLUG ENDE
-
 ///////////////////////////////////////////////////////////////////////////////////////////////ZIELKORREKTUR ANFANG
 if($kreisel_anzahl>0){
     for($i=0;$i< $kreisel_anzahl;$i++){
@@ -822,7 +881,6 @@ if($kreisel_anzahl>0){
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////ZIELKORREKTUR ENDE
-
 ///////////////////////////////////////////////////////////////////////////////////////////////ERFAHRUNG DURCH STRECKE ANFANG
 
 $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set erfahrung=erfahrung+1,strecke=strecke-1000 where strecke>999 and erfahrung<5 and spiel=$spiel");
@@ -1041,8 +1099,6 @@ if ($schiffanzahl>=1) {
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////SELFDESTRUCT ENDE
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////RAUMFALTEN ANFANG
 $zeiger = mysql_query("SELECT * FROM $skrupel_anomalien where extra like 's:%' and art=3 and spiel=$spiel order by id");
 $anoanzahl = mysql_num_rows($zeiger);
@@ -1305,7 +1361,6 @@ if ($basenanzahl>=1) {
 $zeiger_temp = mysql_query("UPDATE $skrupel_sternenbasen set schiffbau_status=0,schiffbau_extra='' where spiel=$spiel");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////SCHIFFSBAU ENDE
-
 ///////////////////////////////////////////////////////////////////////////////////////////////GRAVITATION ANFANG
 
 $zeiger2 = mysql_query("SELECT * FROM $skrupel_schiffe where status<>2 and spiel=$spiel order by id");
@@ -1502,8 +1557,6 @@ if($module[0]) {
     include(INCLUDEDIR.'inc.host_spionage.php');
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////SPIONAGE ENDE
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////SUBRAUMVERZERRUNG BETA ANFANG
 $zeiger = mysql_query("SELECT * FROM $skrupel_schiffe where spezialmission=10 and spiel=$spiel order by id");
 $schiffanzahl = mysql_num_rows($zeiger);
@@ -1579,21 +1632,16 @@ if ($schiffanzahl>=1) {
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////SUBRAUMVERZERRUNG BETA ENDE
-
 ///////////////////////////////////////////////////////////////////////////////////////////////SCHIFFSKAMPF PLANET ANFANG
 
 include(INCLUDEDIR.'inc.host_orbitalkampf.php');
 
 ///////////////////////////////////////////////////////////////////////////////////////////////SCHIFFSKAMPF PLANET ENDE
-
 ///////////////////////////////////////////////////////////////////////////////////////////////SCHIFFSKAMPF ANFANG
 
 include(INCLUDEDIR.'inc.host_raumkampf.php');
 
 ///////////////////////////////////////////////////////////////////////////////////////////////SCHIFFSKAMPF ENDE
-
-///////////////////////////////////////////////////////////////////////////////////////////////STERNENBASEN ANFANG
-
 ///////////////////////////////////////////////////////////////////////////////////////////////STERNENBASEN BAUEN ANFANG
 
 $zeiger = mysql_query("SELECT * FROM $skrupel_sternenbasen where status=0 and spiel=$spiel order by id");
@@ -1621,9 +1669,6 @@ if ($basenanzahl>=1) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////STERNENBASEN BAUEN ENDE
-
-///////////////////////////////////////////////////////////////////////////////////////////////STERNENBASEN ENDE
-
 ///////////////////////////////////////////////////////////////////////////////////////////////SCHIFF WEICHT PLANET AUS ANFANG
 
 $zeiger = mysql_query("SELECT id,status,besitzer,name,klasse,klasseid,kox,koy,volk,bild_gross FROM $skrupel_schiffe where status=2 and spiel=$spiel order by id");
@@ -1785,7 +1830,7 @@ if ($schiffanzahl>=1) {
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////SCHIFF WEICHT SCHIFF AUS ENDE
-/////////////////////////////////////////////////////////////////////////////////////////////SPEZIALMISSIONEN ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////SPEZIALMISSIONEN ANFANG
 
 $zeiger = mysql_query("SELECT * FROM $skrupel_schiffe where spezialmission>=1 and spiel=$spiel order by id");
 $schiffanzahl = mysql_num_rows($zeiger);
@@ -1873,7 +1918,7 @@ if ($schiffanzahl>=1) {
         $cybern=intval(substr($fertigkeiten,48,2));
         $destabi=intval(substr($fertigkeiten,50,2));
 
-        /////////////////////////////////////////////////////////////////////////////////////////////MINENFELD RAEUMEN ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////MINENFELD RAEUMEN ANFANG
         if (($module[2]) and ($spezialmission==25) and ($hanger_anzahl>=1)) {
             if($status!=2){
                 $erfolg=0;
@@ -1937,8 +1982,8 @@ if ($schiffanzahl>=1) {
                 $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set spezialmission=0 where id=$shid");
             }
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////MINENFELD RAEUMEN ENDE
-        /////////////////////////////////////////////////////////////////////////////////////////////MINENFELD LEGEN ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////MINENFELD RAEUMEN ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////MINENFELD LEGEN ANFANG
         if (($module[2]) and ($spezialmission==24)) {
             if($status!=2){
                 $legen=intval($extra[2]);
@@ -1962,8 +2007,8 @@ if ($schiffanzahl>=1) {
                 $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set spezialmission=0 where id=$shid");
             }
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////MINENFELD LEGEN ENDE
-        /////////////////////////////////////////////////////////////////////////////////////////////AUTOGRAPSCH ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////MINENFELD LEGEN ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////AUTOGRAPSCH ANFANG
 
         unset($a_planet);
 
@@ -2093,8 +2138,8 @@ if ($schiffanzahl>=1) {
             $fracht_vorrat+=beam_p_s($conn, $planet_id, $shid, "vorrat", $p_vorrat);
         }
 
-        /////////////////////////////////////////////////////////////////////////////////////////////AUTOGRAPSCH ENDE
-        /////////////////////////////////////////////////////////////////////////////////////////////SUBPARTIKELVERZERRUNG ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////AUTOGRAPSCH ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////SUBPARTIKELCLUSTER ANFANG
         if (    ($fracht_vorrat>=$fert_sub_vorrat)
                 and ($fert_sub_vorrat>=1)
                 and ( ($spezialmission==4) or ($spezialmission==27) ) )
@@ -2114,8 +2159,8 @@ if ($schiffanzahl>=1) {
                 $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set fracht_vorrat=fracht_vorrat-$vorrat_verbrauch,fracht_min1=fracht_min1+$min1_prod,fracht_min2=fracht_min2+$min2_prod,fracht_min3=fracht_min3+$min3_prod where id=$shid");
             }
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////SUBPARTIKELVERZERRUNG ENDE
-        /////////////////////////////////////////////////////////////////////////////////////////////DESTABILISATOR ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////SUBPARTIKELCLUSTER ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////DESTABILISATOR ANFANG
         if (($spezialmission==20)and ($status==2)) {
             $zufall=mt_rand(1,100);
             if ($zufall<=$destabi) {
@@ -2167,15 +2212,15 @@ if ($schiffanzahl>=1) {
                 }
             }
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////DESTABILISATOR ENDE
-        /////////////////////////////////////////////////////////////////////////////////////////////CYBERRITTNIKK ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////DESTABILISATOR ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////CYBERRITTNIKK ANFANG
         if ($fracht_vorrat>=220 && ($spezialmission==19 || $spezialmission==28) && $s_eigenschaften[$besitzer]['rasse']==$volk) {
             $kolonistengebaut = 220*$cybern;
             $fracht_leute += $kolonistengebaut;
             mysql_query("UPDATE $skrupel_schiffe SET fracht_vorrat=fracht_vorrat-220, fracht_leute=fracht_leute+$kolonistengebaut WHERE id=$shid");
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////CYBERRITTNIKK ENDE
-        /////////////////////////////////////////////////////////////////////////////////////////////QUARKREORGANISATOR ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////CYBERRITTNIKK ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////QUARKREORGANISATOR ANFANG
         if ( ($spezialmission==6) || ($spezialmission==26) ){
 
             $max=$tankfrei;
@@ -2209,10 +2254,8 @@ if ($schiffanzahl>=1) {
                 $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set fracht_vorrat=fracht_vorrat-$vorrat_verbrauch,fracht_min1=fracht_min1-$min1_verbrauch,fracht_min2=fracht_min2-$min2_verbrauch,fracht_min3=fracht_min3-$min3_verbrauch,lemin=lemin+$lemin_prod where id=$shid");
             }
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////QUARKREORGANISATOR ENDE
-
-
-        /////////////////////////////////////////////////////////////////////////////////////////////SCHIFF RECYCLEN ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////QUARKREORGANISATOR ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////SCHIFF RECYCLEN ANFANG
         if (($spezialmission==2) and ($status==2)) {
 
             $zeiger2 = mysql_query("SELECT * FROM $skrupel_planeten where x_pos=$kox and y_pos=$koy and besitzer=$besitzer and spiel=$spiel");
@@ -2266,9 +2309,8 @@ if ($schiffanzahl>=1) {
                 }
             }
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////SCHIFF RECYCLEN ENDE
-
-        /////////////////////////////////////////////////////////////////////////////////////////////SCHIFF REPARATUR ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////SCHIFF RECYCLEN ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////SCHIFF REPARATUR ANFANG
         if (($spezialmission==14) and ($status==2) and ($schaden>=1)) {
 
             $reperatur=0;
@@ -2327,8 +2369,8 @@ if ($schiffanzahl>=1) {
                 }
             }
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////SCHIFF REPARATUR ENDE
-        /////////////////////////////////////////////////////////////////////////////////////////////CREW ANHEUERN ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////SCHIFF REPARATUR ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////CREW ANHEUERN ANFANG
         if (($spezialmission==23) and ($status==2)) {
 
             $reperatur=0;
@@ -2363,9 +2405,8 @@ if ($schiffanzahl>=1) {
                 }
             }
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////CREW ANHEUERN ENDE
-
-        /////////////////////////////////////////////////////////////////////////////////////////////TANKEN ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////CREW ANHEUERN ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////TANKEN ANFANG
         if (($spezialmission==1) and ($status==2)) {
             $zeiger2 = mysql_query("SELECT * FROM $skrupel_planeten where x_pos=$kox and y_pos=$koy and spiel=$spiel");
             $planetenanzahl = mysql_num_rows($zeiger2);
@@ -2389,8 +2430,8 @@ if ($schiffanzahl>=1) {
                 $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set lemin=lemin+$lemin_tanken where id=$shid");
             }
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////TANKEN ENDE
-        /////////////////////////////////////////////////////////////////////////////////////////////PLANETENBOMBARDEMENT ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////TANKEN ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////PLANETENBOMBARDEMENT ANFANG
         if (($spezialmission==3) and ($status==2)) {
 
             $zeiger2 = mysql_query("SELECT * FROM $skrupel_planeten where x_pos=$kox and y_pos=$koy and besitzer<>$besitzer and besitzer>=1 and spiel=$spiel");
@@ -2461,9 +2502,8 @@ if ($schiffanzahl>=1) {
                 }
             }
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////PLANETENBOMBARDEMENT ENDE
-
-        /////////////////////////////////////////////////////////////////////////////////////////////VIRALER ANGRIFF ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////PLANETENBOMBARDEMENT ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////VIRALER ANGRIFF ANFANG
         if (($spezialmission==17) and ($status==2)) {
             $zeiger2 = mysql_query("SELECT * FROM $skrupel_planeten where x_pos=$kox and y_pos=$koy and besitzer<>$besitzer and besitzer>=1 and spiel=$spiel");
             $planetenanzahl = mysql_num_rows($zeiger2);
@@ -2534,10 +2574,8 @@ if ($schiffanzahl>=1) {
             }
         }
 
-        /////////////////////////////////////////////////////////////////////////////////////////////VIRALER ANGRIFF ENDE
-
-
-        /////////////////////////////////////////////////////////////////////////////////////////////TERRAFORMING ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////VIRALER ANGRIFF ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////TERRAFORMING ANFANG
         if (($spezialmission==5) and ($status==2)) {
 
             $zeiger2 = mysql_query("SELECT * FROM $skrupel_planeten where x_pos=$kox and y_pos=$koy and spiel=$spiel");
@@ -2562,9 +2600,8 @@ if ($schiffanzahl>=1) {
                 $zeiger_temp = mysql_query("UPDATE $skrupel_planeten set temp=$p_temp where id=$p_id");
             }
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////TERRAFORMING ENDE
-
-        /////////////////////////////////////////////////////////////////////////////////////////////SPRUNGTOR ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////TERRAFORMING ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////SPRUNGTOR ANFANG
         if (($spezialmission==13) and ($status==1) and ($flug==0)) {
 
             $ok=2;
@@ -2623,8 +2660,8 @@ if ($schiffanzahl>=1) {
                 }
             }
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////SPRUNGTOR ENDE
-        /////////////////////////////////////////////////////////////////////////////////////////////Akademieausbildung Anfang
+///////////////////////////////////////////////////////////////////////////////////////////////SPRUNGTOR ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////AKADEMIEAUSBILDUNG ANFANG
         if(($spezialmission>71) and ($spezialmission<77) and ($masse<100)){
             if($flug==0){
                 $zeiger2 = mysql_query("SELECT * FROM $skrupel_planeten where besitzer=$spieler and spiel=$spiel and x_pos=$kox and y_pos=$koy");
@@ -2670,11 +2707,9 @@ if ($schiffanzahl>=1) {
                 neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['akademie'][3],array($name));
             }
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////Akademieausbildung Ende
     }
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////TARNFELD ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////AKADEMIEAUSBILDUNG ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////TARNFELD ANFANG
 
 $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set tarnfeld=1 where spezialmission=8 and spiel=$spiel");
 if($module[0]) {
@@ -2793,8 +2828,8 @@ if ($schiffanzahl>=1) {
     }
 }
 $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set tarnfeld=1 where antrieb=2 and spiel=$spiel");
-/////////////////////////////////////////////////////////////////////////////////////////////TARNFELD ENDE
-/////////////////////////////////////////////////////////////////////////////////////////////DRUGUNVERZERRER ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////TARNFELD ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////DRUGUNVERZERRER ANFANG
 $zeiger = mysql_query("SELECT fracht_leute,id,name,klasse,kox,koy,volk,besitzer,bild_gross,crew,leichtebt,schwerebt,zusatzmodul,spezialmission,status FROM $skrupel_schiffe where spezialmission=30 and zusatzmodul=6 and status=2 and spiel=$spiel order by id");
 $schiffanzahl = mysql_num_rows($zeiger);
 
@@ -2869,17 +2904,15 @@ if ($schiffanzahl>=1) {
         }
     }
 }
-/////////////////////////////////////////////////////////////////////////////////////////////DRUGUNVERZERRER ENDE
-/////////////////////////////////////////////////////////////////////////////////////////////SENSORPHALANX UND LABOR ANFANG
+///////////////////////////////////////////////////////////////////////////////////////////////DRUGUNVERZERRER ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////SENSORPHALANX UND LABOR ANFANG
 
 $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set scanner=0 where spezialmission<>11 and spezialmission<>12 and spiel=$spiel");
 $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set scanner=1 where spezialmission=11 and spiel=$spiel");
 $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set scanner=2 where spezialmission=12 and spiel=$spiel");
 
-/////////////////////////////////////////////////////////////////////////////////////////////SENSORPHALANX UND LABOR ENDE
-
-/////////////////////////////////////////////////////////////////////////////////////////////SPEZIALMISSIONEN ENDE
-
+///////////////////////////////////////////////////////////////////////////////////////////////SENSORPHALANX UND LABOR ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////SPEZIALMISSIONEN ENDE
 ///////////////////////////////////////////////////////////////////////////////////////////////PLANETEN ANFANG
 ///////////////////////////////////////////////////////////////////////////////////////////////KOLONISTEN UND TRUPPEN SCHRUMPFEN ANFANG
 
@@ -2939,7 +2972,7 @@ if ($planetenanzahl>=1) {
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////KOLONISTEN SCHRUMPFEN ENDE
+///////////////////////////////////////////////////////////////////////////////////////////////KOLONISTEN UND TRUPPEN SCHRUMPFEN ENDE
 ///////////////////////////////////////////////////////////////////////////////////////////////PLANETEN NEU BESETZEN ANFANG
 
 $zeiger = mysql_query("SELECT * FROM $skrupel_planeten where besitzer=0 and (kolonisten_new>0 or leichtebt_new>0 or schwerebt>0) and spiel=$spiel order by id");
@@ -3207,7 +3240,7 @@ for ($zaehler=1;$zaehler<=10;$zaehler++) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////HANDELSABKOMMEN ENDE
-///////////////////////////////////////////////////////////////////////////////////////////////PLANETEN START
+///////////////////////////////////////////////////////////////////////////////////////////////PLANETEN ANFANG
 
 $zeiger = mysql_query("SELECT * FROM $skrupel_planeten where besitzer>=1 and spiel=$spiel order by id");
 $planetenanzahl = mysql_num_rows($zeiger);
@@ -3731,7 +3764,6 @@ if ($planetenanzahl>=1) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////PLANETEN ENDE
-
 ///////////////////////////////////////////////////////////////////////////////////////////////ROUTEBEAMEN ANFANG
 $zeiger = mysql_query("SELECT * FROM $skrupel_schiffe where status=2 and routing_status=2 and spiel=$spiel order by id");
 $schiffanzahl = mysql_num_rows($zeiger);
@@ -3992,7 +4024,6 @@ if ($datensaetze>=1) {
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////PLASMASTURM VERSCHWINDEN ENDE
-
 ///////////////////////////////////////////////////////////////////////////////////////////////PLASMASTURM ENSTEHUNG ANFANG
 
 $zeiger = mysql_query("SELECT count(*) as total FROM $skrupel_anomalien where art=6 and spiel=$spiel");
@@ -4033,7 +4064,6 @@ if (($sturm<$plasma_max) and ($zufall<=$plasma_wahr)) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////PLASMASTURM ENSTEHUNG ENDE
-
 ///////////////////////////////////////////////////////////////////////////////////////////////NEBELSEKTOREN ANFANG
 $besitzer_recht[1]='1000000000';
 $besitzer_recht[2]='0100000000';
@@ -4313,170 +4343,4 @@ for ($m=1;$m<11;$m++) {
     $spieler_hash[$m]=$hash;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////HASH ENDE
-///////////////////////////////////////////////////////////////////////////////////////////////LETZTER MONAT ENDE
-
-if ($neuekolonie==0) {$neuekolonie=$lang['host'][$language]['letztermonat'][0];}
-if ($neuekolonie==1) {$neuekolonie=$lang['host'][$language]['letztermonat'][1];}
-if ($neuekolonie>=2) {$neuekolonie=str_replace(array('{1}'),array($neuekolonie),$lang['host'][$language]['letztermonat'][2]);}
-
-if ($neueschiffe==0) {$neueschiffe=$lang['host'][$language]['letztermonat'][3];}
-if ($neueschiffe==1) {$neueschiffe=$lang['host'][$language]['letztermonat'][4];}
-if ($neueschiffe>=2) {$neueschiffe=str_replace(array('{1}'),array($neueschiffe),$lang['host'][$language]['letztermonat'][5]);}
-
-if ($neuebasen==0) {$neuebasen=$lang['host'][$language]['letztermonat'][6];}
-if ($neuebasen==1) {$neuebasen=$lang['host'][$language]['letztermonat'][7];}
-if ($neuebasen>=2) {$neuebasen=str_replace(array('{1}'),array($neuebasen),$lang['host'][$language]['letztermonat'][8]);}
-
-if ($schiffevernichtet==0) {$schiffevernichtet=$lang['host'][$language]['letztermonat'][9];}
-if ($schiffevernichtet==1) {$schiffevernichtet=$lang['host'][$language]['letztermonat'][10];}
-if ($schiffevernichtet>=2) {$schiffevernichtet=str_replace(array('{1}'),array($schiffevernichtet),$lang['host'][$language]['letztermonat'][11]);}
-
-if ($planetenerobert==0) {$planetenerobert=$lang['host'][$language]['letztermonat'][12];}
-if ($planetenerobert==1) {$planetenerobert=$lang['host'][$language]['letztermonat'][13];}
-if ($planetenerobert>=2) {$planetenerobert=str_replace(array('{1}'),array($planetenerobert),$lang['host'][$language]['letztermonat'][14]);}
-
-if ($planetenerobertfehl==0) {$planetenerobertfehl="";}
-if ($planetenerobertfehl==1) {$planetenerobertfehl=$lang['host'][$language]['letztermonat'][15];}
-if ($planetenerobertfehl>=2) {$planetenerobertfehl=str_replace(array('{1}'),array($planetenerobertfehl),$lang['host'][$language]['letztermonat'][16]);}
-
-if ($schiffverschollen==0) {$schiffverschollen=$lang['host'][$language]['letztermonat'][21];}
-if ($schiffverschollen==1) {$schiffverschollen=$lang['host'][$language]['letztermonat'][22];}
-if ($schiffverschollen>=2) {$schiffverschollen=str_replace(array('{1}'),array($schiffverschollen),$lang['host'][$language]['letztermonat'][23]);}
-
-
-$letztermonat=str_replace(array('{1}','{2}','{3}','{4}','{5}','{6}','{7}'),array($neuekolonie,$neueschiffe,$neuebasen,$schiffevernichtet,$planetenerobert,$planetenerobertfehl,$schiffverschollen),$lang['host'][$language]['letztermonat'][17]);
-
-$zeiger_temp = mysql_query("UPDATE $skrupel_spiele set letztermonat='$letztermonat', runde=runde+1 where id=$spiel;");
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////ZIEL ANFANG
-
-$endejetzt=0;
-
-if ($ziel_id==1) {
-    if ($spieleranzahl<=intval($ziel_info)) {
-        $endejetzt=1;
-    }
-}
-if ($ziel_id==2) {
-    if (($spieler_raus_c[1]==1) or ($spieler_raus_c[5]==1) or ($spieler_raus_c[8]==1) or ($spieler_raus_c[2]==1) or ($spieler_raus_c[6]==1) or ($spieler_raus_c[9]==1) or ($spieler_raus_c[3]==1) or ($spieler_raus_c[7]==1) or ($spieler_raus_c[10]==1) or ($spieler_raus_c[4]==1)) {
-        $endejetzt=1;
-    }
-}
-
-if ($ziel_id==5) {
-
-    for ($k=1;$k<11;$k++) {
-        $spieler_ziel_t_c[$k]=0;
-    }
-
-    $zeiger = mysql_query("SELECT status,spiel,id,besitzer,fracht_min3 FROM $skrupel_schiffe where status<>2 and spiel=$spiel order by id");
-    $schiffanzahl = mysql_num_rows($zeiger);
-
-    if ($schiffanzahl>=1) {
-        for ($i=0; $i<$schiffanzahl;$i++) {
-            $ok = mysql_data_seek($zeiger,$i);
-            $array = mysql_fetch_array($zeiger);
-            $besitzer=$array["besitzer"];
-            $fracht_min3=$array["fracht_min3"];
-
-            if ($fracht_min3>=1) { $spieler_ziel_t_c[$besitzer]=$spieler_ziel_t_c[$besitzer]+$fracht_min3; }
-        }
-    }
-
-    $zeiger_temp = mysql_query("UPDATE $skrupel_spiele set spieler_1_ziel='$spieler_ziel_t_c[1]',spieler_2_ziel='$spieler_ziel_t_c[2]',spieler_3_ziel='$spieler_ziel_t_c[3]',spieler_4_ziel='$spieler_ziel_t_c[4]',spieler_5_ziel='$spieler_ziel_t_c[5]',spieler_6_ziel='$spieler_ziel_t_c[6]',spieler_7_ziel='$spieler_ziel_t_c[7]',spieler_8_ziel='$spieler_ziel_t_c[8]',spieler_9_ziel='$spieler_ziel_t_c[9]',spieler_10_ziel='$spieler_ziel_t_c[10]' where id=$spiel;");
-    $temp=intval($ziel_info);
-
-    if (($spieler_ziel_t_c[1]>=$temp) or ($spieler_ziel_t_c[2]>=$temp) or ($spieler_ziel_t_c[3]>=$temp) or ($spieler_ziel_t_c[4]>=$temp) or ($spieler_ziel_t_c[5]>=$temp) or ($spieler_ziel_t_c[6]>=$temp) or ($spieler_ziel_t_c[7]>=$temp) or ($spieler_ziel_t_c[8]>=$temp) or ($spieler_ziel_t_c[9]>=$temp) or ($spieler_ziel_t_c[10]>=$temp)) {
-        $endejetzt=1;
-    }
-}
-
-if ($ziel_id==6) {
-    if (($spieler_raus_c[1]==1) or ($spieler_raus_c[5]==1) or ($spieler_raus_c[8]==1) or ($spieler_raus_c[2]==1) or ($spieler_raus_c[6]==1) or ($spieler_raus_c[9]==1) or ($spieler_raus_c[3]==1) or ($spieler_raus_c[7]==1) or ($spieler_raus_c[10]==1) or ($spieler_raus_c[4]==1)) {
-        $endejetzt=1;
-    }
-}
-
-
-if ($endejetzt==1) {
-    include(INCLUDEDIR.'inc.host_spielende.php');
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////ZIEL ENDE
-///////////////////////////////////////////////////////////////////////////////////////////////STATS AUSWERTUNG ANFANG
-
-for ($m=1;$m<11;$m++) {
-    if ($spieler_id_c[$m]>=1) {$zeiger = mysql_query("UPDATE $skrupel_user set stat_sieg=stat_sieg+$stat_sieg[$m],stat_schlacht=stat_schlacht+$stat_schlacht[$m],stat_schlacht_sieg=stat_schlacht_sieg+$stat_schlacht_sieg[$m],stat_kol_erobert=stat_kol_erobert+$stat_kol_erobert[$m],stat_lichtjahre=stat_lichtjahre+$stat_lichtjahre[$m],stat_monate=stat_monate+1 where id=$spieler_id_c[$m]"); }
-}
-if ((@file_exists($xstats_verzeichnis)) and (intval(substr($spiel_extend,2,1))==1)) {
-    xstats_collectAndStore( $sid, &$stat_schlacht,&$stat_schlacht_sieg,&$stat_kol_erobert,&$stat_lichtjahre);
-}
-///////////////////////////////////////////////////////////////////////////////////////////////STATS AUSWERTUNG ENDE
-/////////////////////////////////////////////////////////////////////////////////////////////// BENACHRICHTIGUNG ANFANG
-
-
-for ($k=1; $k<=10; $k++) {
-    if ($spieler_id_c[$k]>0 and $spieler_raus_c[$k]==0) {
-        $nachrichtemail=str_replace('{1}',$spiel_name,$lang['host'][$spielersprache[$k]]['letztermonat'][18]);
-        $nachrichticq=str_replace('{1}',$spiel_name,$lang['host'][$spielersprache[$k]]['letztermonat'][24]);
-        $emailtopic=str_replace(array('{1}'),array($spiel_name),$lang['host'][$spielersprache[$k]]['letztermonat'][20]);
-
-        $zeiger = mysql_query("SELECT * FROM $skrupel_user WHERE id={$spieler_id_c[$k]}");
-        $array = mysql_fetch_array($zeiger);
-        $emailadresse=$array['email'];
-        $icqnummer=$array['icq'];
-        $optionen=$array['optionen'];
-        $emailicq=$icqnummer."@pager.icq.com";
-
-
-        $url="http://".$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'];
-        $url=substr($url,0,strlen($url)-19);
-        
-        $url="http://".$_SERVER['SERVER_NAME'];
-        $folders = explode('/', $_SERVER['SCRIPT_NAME']);
-        $count = 0;
-        $url .= '/';
-        foreach ($folders as $value) {
-            if ((0 < $count) and (count($folders) > $count+1) and ('inhalt' != $value)){
-                $url .= $value . '/';
-            }
-            $count++;
-        }        
-        $hash=$spieler_hash[$k];
-
-        $nachricht_fertig = $nachrichtemail."\n\n".$url.'index.php?hash='.$hash;
-
-        if (substr($optionen,0,1)=='1') {
-        @mail($emailadresse,$emailtopic, $nachricht_fertig,
-            "From: $absenderemail\r\n"
-            ."Reply-To: $absenderemail\r\n"
-            ."X-Mailer: PHP/" . phpversion());
-        }
-        /*
-        if (substr($optionen,1,1)=='1') {
-            $header="From $absenderemail\nReply-To:$absenderemail\n";
-            @mail($emailicq,$emailtopic,"$nachrichticq",$header);
-        }
-        */
-    }
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////// BENACHRICHTIGUNG ENDE
-
-///////////////////////////////////////////////////////////////////////////////////////////////LETZTER MONAT ENDE
-
-$nachricht=str_replace('{1}',$spiel_name,$lang['host'][$language]['letztermonat'][19]);
-$aktuell=time();
-$zeiger = mysql_query("INSERT INTO $skrupel_chat (spiel,datum,text,an,von,farbe) values ($spiel,'$aktuell','$nachricht',0,'System','000000');");
-
-///////////////////////////////////////////////////////////////////////////////////////////////MOVIEGIF OPTIONAL ANFANG
-
-$moviegif_verzeichnis = $main_verzeichnis.'extend/moviegif';
-
-if ((@file_exists($moviegif_verzeichnis)) and (intval(substr($spiel_extend,0,1))==1)) {
-    include($moviegif_verzeichnis.'/shot.php');
-}
-///////////////////////////////////////////////////////////////////////////////////////////////MOVIEGIF OPTIONAL END
 ?>
