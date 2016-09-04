@@ -102,7 +102,7 @@ if ($fuid==3) {
     }    
     
     if($fertig>=$spieleranzahl) {
-        $backlink = "zugende.php?fu=61&uid=$uid&sid=$sid&sprache=".$_GET["sprache"];
+        $backlink = "zugende.php?fu=6&uid=$uid&sid=$sid&sprache=".$_GET["sprache"];
     } else {
         $backlink = "zugende.php?fu=9&uid=$uid&sid=$sid&sprache=".$_GET["sprache"];
     }
@@ -127,7 +127,7 @@ if ($fuid==4) {
 }
 //}}}
 //fu:5 Zug berechnen {{{
-if ($fuid==5) {
+if ($fuid==-5) {
     include ('inc.header.php');
 
     $fertig = 0;
@@ -173,7 +173,7 @@ if ($fuid==5) {
 }
 //}}}
 //fu:6 Zug wird berechnet Nachricht und Redirect {{{
-if ($fuid==6) {
+if ($fuid==-6) {
     include ('inc.header.php');
     ?>
     <body onLoad="window.location='zugende.php?fu=5&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>';" text="#000000" bgcolor="#444444" style="background-image:url('<?php echo $bildpfad?>/aufbau/14.gif'); background-attachment:fixed;"  link="#000000" vlink="#000000" alink="#000000" leftmargin="0" rightmargin="0" topmargin="0" marginwidth="0" marginheight="0">
@@ -322,7 +322,7 @@ if ($fuid==9) {
     }
 
     if($fertig>=$spieleranzahl) {
-        $backlink = "zugende.php?fu=61&uid=$uid&sid=$sid&sprache=".$_GET["sprache"];
+        $backlink = "zugende.php?fu=6&uid=$uid&sid=$sid&sprache=".$_GET["sprache"];
     } else {
         $backlink = "zugende.php?fu=4&uid=$uid&sid=$sid&sprache=".$_GET["sprache"];
     }
@@ -330,10 +330,14 @@ if ($fuid==9) {
 }
 //}}}
 
-if ($fuid==61) {
+if ($fuid==6) {
     include ('inc.header.php');
+
+	$step = step($skrupel_zugberechnen, $sid);
+	$last = last();
+
     ?>
-    <body onLoad="window.location='zugende.php?fu=51&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>';" text="#000000" bgcolor="#444444" style="background-image:url('<?php echo $bildpfad?>/aufbau/14.gif'); background-attachment:fixed;"  link="#000000" vlink="#000000" alink="#000000" leftmargin="0" rightmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+    <body onLoad="window.location='zugende.php?fu=5&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>';" text="#000000" bgcolor="#444444" style="background-image:url('<?php echo $bildpfad?>/aufbau/14.gif'); background-attachment:fixed;"  link="#000000" vlink="#000000" alink="#000000" leftmargin="0" rightmargin="0" topmargin="0" marginwidth="0" marginheight="0">
         <center>
             <table border="0" cellspacing="0" cellpadding="0" height="100%">
                 <tr>
@@ -341,27 +345,7 @@ if ($fuid==61) {
                         <center>
                         <img src="<?php echo $bildpfad?>/radd.gif" height="46" width="51">
                             <br><br>
-                            <?php echo $lang['zugende']['wirdberechnet']?> Schritt 1 von 2...
-                        </center>
-                    </td>
-                </tr>
-            </table>
-        </center>
-        <?php
-    include ('inc.footer.php');
-}
-if ($fuid==62) {
-    include ('inc.header.php');
-    ?>
-    <body onLoad="window.location='zugende.php?fu=52&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>';" text="#000000" bgcolor="#444444" style="background-image:url('<?php echo $bildpfad?>/aufbau/14.gif'); background-attachment:fixed;"  link="#000000" vlink="#000000" alink="#000000" leftmargin="0" rightmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-        <center>
-            <table border="0" cellspacing="0" cellpadding="0" height="100%">
-                <tr>
-                    <td>
-                        <center>
-                        <img src="<?php echo $bildpfad?>/radd.gif" height="46" width="51">
-                            <br><br>
-                            <?php echo $lang['zugende']['wirdberechnet']?> Schritt 2 von 2...
+                            <?php echo $lang['zugende']['wirdberechnet'].' Schritt '.$step.' von '.$last.'...' ?>
                         </center>
                     </td>
                 </tr>
@@ -371,23 +355,31 @@ if ($fuid==62) {
     include ('inc.footer.php');
 }
 
-if ($fuid==51) {
+if ($fuid==5) {
     include ('inc.header.php');
+
+	$step = step($skrupel_zugberechnen, $sid);
+	$last = last();
 
     $fertig = 0;
     for($i=1; $i<=10; $i++) {
         if($spieler_zug_c[$i]==1) $fertig++;
     }
+	if($fertig>=$spieleranzahl) {
+		$lasttick = time();
+		@mysql_query("UPDATE $skrupel_spiele SET lasttick='$lasttick',spieler_1_zug=0,spieler_2_zug=0,spieler_3_zug=0,spieler_4_zug=0,spieler_5_zug=0,spieler_6_zug=0,spieler_7_zug=0,spieler_8_zug=0,spieler_9_zug=0,spieler_10_zug=0 WHERE sid='$sid';");
+	}
+	
+	$main_verzeichnis = '../';
+    include('inc.zugberechnen.step'.$step.'.php');	
+	
+    @mysql_query("UPDATE $skrupel_zugberechnen SET step='$step' WHERE sid='$sid';");
 
-    if($fertig>=$spieleranzahl) {
-        $lasttick = time();
-        @mysql_query("UPDATE $skrupel_spiele SET lasttick='$lasttick',spieler_1_zug=0,spieler_2_zug=0,spieler_3_zug=0,spieler_4_zug=0,spieler_5_zug=0,spieler_6_zug=0,spieler_7_zug=0,spieler_8_zug=0,spieler_9_zug=0,spieler_10_zug=0 WHERE sid='$sid';");
-
-        $main_verzeichnis = '../';
-		include('inc.zugberechnen.init.php');
-        include('inc.zugberechnen.step1.php');
-        include('inc.zugberechnen.step2.php');
-    }
+	$redir = "javascript:redirNext();";
+	if ($step == $last) {
+		$redir = "javascript:redirLast();";
+		@mysql_query("UPDATE $skrupel_zugberechnen SET step='0' WHERE sid='$sid';");
+	}
     ?>
     <script language=JavaScript>
         function link(url) {
@@ -398,59 +390,42 @@ if ($fuid==51) {
                 parent.mittemitte.rahmen12.window.location=url;
             }
         }
-        function redir() {
-            link('zugende.php?fu=62&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>');
-			window.location='zugende.php?fu=62&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>';
-            // link('uebersicht_uebersicht.php?fu=1&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>');
-            // window.location='uebersicht.php?fu=1&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>';
-        }
-    </script>
-	<body onload="javascript:redir();" text="#000000" bgcolor="#444444" style="background-image:url('<?php echo $bildpfad?>/aufbau/14.gif'); background-attachment:fixed;" link="#000000" vlink="#000000" alink="#000000" leftmargin="0" rightmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-	<center>
-		<table border="0" height="100%" cellspacing="0" cellpadding="0">
-			<tr>
-			<td><nobr><center><?php echo $lang['zugende']['wurdenausgewertet']?> Schritt 1 von 2...</center></nobr></td>
-			</tr>
-		</table>
-	</center>
-	<?php
-	$fuu=1;
-    include ('inc.footer.php');
-}
-
-if ($fuid==52) {
-    include ('inc.header.php');
-
-
-	echo "first";
-	sleep(2);
-
-    ?>
-    <script language=JavaScript>
-        function link(url) {
-            if (parent.mittelinksoben.document.globals.map.value==1) {
-                parent.mittelinksoben.document.globals.map.value=0;
-                parent.mittemitte.window.location='aufbau.php?fu=100&query='+url;
-            } else  {
-                parent.mittemitte.rahmen12.window.location=url;
-            }
-        }
-        function redir() {
+        function redirLast() {
             link('uebersicht_uebersicht.php?fu=1&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>');
             window.location='uebersicht.php?fu=1&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>';
         }
+        function redirNext() {
+			window.location='zugende.php?fu=6&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>';
+        }
     </script>
-	<body onload="javascript:redir();" text="#000000" bgcolor="#444444" style="background-image:url('<?php echo $bildpfad?>/aufbau/14.gif'); background-attachment:fixed;" link="#000000" vlink="#000000" alink="#000000" leftmargin="0" rightmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+	<body onload="<?php echo $redir; ?>" text="#000000" bgcolor="#444444" style="background-image:url('<?php echo $bildpfad?>/aufbau/14.gif'); background-attachment:fixed;" link="#000000" vlink="#000000" alink="#000000" leftmargin="0" rightmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 	<center>
 		<table border="0" height="100%" cellspacing="0" cellpadding="0">
 			<tr>
-			<td><nobr><center><?php echo $lang['zugende']['wurdenausgewertet']?> Schritt 2 von 2...</center></nobr></td>
+			<td><nobr><center><?php echo $lang['zugende']['wurdenausgewertet'].' für Schritt '.$step.' von '.$last ?></center></nobr></td>
 			</tr>
 		</table>
 	</center>
 	<?php
 	$fuu=1;
-	include ('inc.host_messenger.php');
+	if ($step == $last) include ('inc.host_messenger.php');
     include ('inc.footer.php');
+}
+
+function step($skrupel_zugberechnen, $sid) {
+	$zeiger = @mysql_query("SELECT step FROM $skrupel_zugberechnen WHERE sid='$sid';");
+	$array = @mysql_fetch_array($zeiger);
+	return $array['step'] + 1;
+}
+
+function last() {
+	$found = 0;
+	$files = scandir('../inhalt');
+	foreach($files as $file) {
+		if(strpos($file, 'inc.zugberechnen.step') !== false) {
+			$found++;
+		}
+	}
+	return $found;
 }
 ?>

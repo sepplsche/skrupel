@@ -1,0 +1,19 @@
+Frachter:1:1:freighter_1.jpg:freighter_1_small.jpg:10:2:2:2:0:0:0:50:220:1:1:35:0:
+Todesgleiter:2:2:glider.jpg:glider_small.jpg:52:14:22:16:3:0:0:0:90:1:1:65:0:
+Frachter:3:3:freighter_3.jpg:freighter_3_small.jpg:49:3:7:3:0:0:0:265:200:1:6:70:0:
+Asgard Kreuzer:4:4:asgard_4.jpg:asgard_4_small.jpg:153:47:64:58:4:5:0:90:250:2:426:112:0:
+Osiris:5:4:osiris_4.jpg:osiris_4_small.jpg:76:17:23:14:2:0:2:70:170:1:43:62:0:
+Mutterschiff:6:5:mothership_5.jpg:mothership_5_small.jpg:267:42:91:143:7:0:3:180:240:2:527:243:0:
+Frachter:7:6:freighter_6.jpg:freighter_6_small.jpg:149:29:51:15:0:0:0:1350:550:2:36:126:0:
+Asgard Kreuzer:8:6:asgard_6.jpg:asgard_6_small.jpg:217:63:89:65:6:6:0:40:260:2:503:188:0:
+Alkesh:9:7:alkesh.jpg:alkesh_small.jpg:271:62:41:39:2:0:0:440:150:4:95:171:00000000000000000000000000000000000000000000000009:
+Invasionsträger:10:7:carrier.jpg:carrier_small.jpg:330:85:75:88:0:0:0:950:500:2:122:129:000000000000000000000000000000000000000000000025:
+Mutterschiff:11:7:mothership_7.jpg:mothership_7_small.jpg:422:132:71:112:6:0:4:80:580:3:844:343:0:
+Forschungsraumer:12:8:science.jpg:science_small.jpg:265:83:99:57:6:4:0:60:300:2:489:293:0000000000000000000000001:
+Asgard Kreuzer:13:8:asgard_8.jpg:asgard_8_small.jpg:433:71:122:93:8:7:0:95:350:4:628:294:0:
+Frachter:14:9:freighter_2.jpg:freighter_2_small.jpg:273:41:79:53:0:0:0:2800:1350:4:216:150:0:
+Mutterschiff:15:9:quarker.jpg:quarker_small.jpg:1330:189:407:253:4:0:0:1150:1900:6:3096:561:00000001010:
+Apophis Mutterschiff:16:9:mothership_9.jpg:mothership_9_small.jpg:648:153:161:187:5:0:5:170:480:4:1128:461:0:
+Mutterschiff:17:10:mothership_10.jpg:mothership_10_small.jpg:1190:288:603:317:6:0:0:3300:350:6:4417:661:12120:
+O`Neill Kreuzer:18:10:asgard_10.jpg:asgard_10_small.jpg:601:127:203:145:10:8:0:320:410:4:702:391:0:
+Osiris:19:10:osiris_10.jpg:osiris_10_small.jpg:990:282:203:227:6:0:8:300:2000:6:1454:723:0:

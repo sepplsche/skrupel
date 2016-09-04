@@ -1020,6 +1020,7 @@ $module[6] = @intval($_POST["modul_6"]);
 $module = @implode(":", $module);
 
 $zeiger = @mysql_query("INSERT INTO $skrupel_spiele (sid,name,module,oput) values ('$sid','$spielname','$module',$out)");
+@mysql_query("INSERT INTO $skrupel_zugberechnen (sid, step) VALUES ('$sid', 0);");
 
 $zeiger = @mysql_query("SELECT id,sid FROM $skrupel_spiele where sid='$sid'");
 $array = @mysql_fetch_array($zeiger);
@@ -1640,7 +1641,7 @@ if ($_POST["imperiumgroesse"]==1) {
 
       for  ($k=1; $k<11;$k++) {
          $zeiger_temp = @mysql_query("INSERT INTO $skrupel_ordner (name,besitzer,spiel) values ('Frachter',$k,$spiel)");
-         $zeiger_temp = @mysql_query("INSERT INTO $skrupel_ordner (name,besitzer,spiel) values ('J�ger',$k,$spiel)");
+         $zeiger_temp = @mysql_query("INSERT INTO $skrupel_ordner (name,besitzer,spiel) values ('Jäger',$k,$spiel)");
          $zeiger_temp = @mysql_query("INSERT INTO $skrupel_ordner (name,besitzer,spiel) values ('Sonstige',$k,$spiel)");
       }
 

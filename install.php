@@ -768,6 +768,27 @@ INPUT.eingabe
 	    PRIMARY KEY (id)
 	    ) ENGINE=MyISAM");
 
+	  @mysql_query("CREATE TABLE $skrupel_zugberechnen (
+	    id INT NOT NULL AUTO_INCREMENT,
+	    sid varchar(20) NOT NULL,
+	    step INT NOT NULL,
+	    PRIMARY KEY (id)
+	    ) ENGINE=MyISAM");
+
+	  @mysql_query("CREATE TABLE $skrupel_zugberechnen_daten (
+	    id INT NOT NULL AUTO_INCREMENT,
+	    sid varchar(20) NOT NULL,
+	    neuekolonie INT NOT NULL,
+		schiffverschollen INT NOT NULL,
+		neuekolonie INT NOT NULL,
+		neueschiffe INT NOT NULL,
+		neuebasen INT NOT NULL,
+		schiffevernichtet INT NOT NULL,
+		planetenerobert INT NOT NULL,
+		planetenerobertfehl INT NOT NULL,
+	    PRIMARY KEY (id)
+	    ) ENGINE=MyISAM");
+
 
 	  $zeiger = @mysql_query("SELECT version FROM $skrupel_info");
 	  $array = @mysql_fetch_array($zeiger);

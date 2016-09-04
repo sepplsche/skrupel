@@ -1,4 +1,39 @@
 <?php
+///////////////////////////////Sprachinclude(nur die benoetigten) Anfang
+define('LANGUAGEDIR', $main_verzeichnis.'lang/');
+
+$zeiger = mysql_query("SELECT * FROM $skrupel_spiele WHERE id=$spiel");
+$sprachtemp_1 = mysql_fetch_array($zeiger);
+
+$sprachen = array();
+for ($i=1; $i<=10; $i++){
+    $spieler = 'spieler_'.$i;
+    if($sprachtemp_1[$spieler] > 0) {
+        $zeiger = mysql_query("SELECT * FROM $skrupel_user WHERE id={$sprachtemp_1[$spieler]}");
+        $sprachtemp_3 = mysql_fetch_array($zeiger);
+        $spielersprache[$i] = ($sprachtemp_3['sprache']=='') ? $language : $sprachtemp_3['sprache'];
+
+        if (in_array($sprachtemp_3['sprache'], $sprachen)) $sprachen[] = $sprachtemp_3['sprache'];
+    }
+}
+
+if(count($sprachen) == 0) {
+    include(LANGUAGEDIR.$language.'/lang.inc.host.php');
+} else {
+    foreach($sprachen as $sprache) {
+        include(LANGUAGEDIR.$sprache.'/lang.inc.host.php');
+    }
+}
+///////////////////////////////Sprachinclude(nur die benoetigten) Ende
+///////////////////////////////////////////////////////////////////////////////////////////////STATS INITIALISIEREN ANFANG
+
+$stat_sieg = array_fill(1, 10, 0);
+$stat_schlacht = array_fill(1, 10, 0);
+$stat_schlacht_sieg = array_fill(1, 10, 0);
+$stat_kol_erobert = array_fill(1, 10, 0);
+$stat_lichtjahre = array_fill(1, 10, 0);
+
+///////////////////////////////////////////////////////////////////////////////////////////////STATS INITIALISIEREN ENDE
 ///////////////////////////////////////////////////////////////////////////////////////////////LETZTER MONAT ANFANG
 
 if ($neuekolonie==0) {$neuekolonie=$lang['host'][$language]['letztermonat'][0];}
@@ -99,7 +134,7 @@ if ((@file_exists($xstats_verzeichnis)) and (intval(substr($spiel_extend,2,1))==
     xstats_collectAndStore( $sid, &$stat_schlacht,&$stat_schlacht_sieg,&$stat_kol_erobert,&$stat_lichtjahre);
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////STATS AUSWERTUNG ENDE
-///////////////////////////////////////////////////////////////////////////////////////////////BENACHRICHTIGUNG ANFANG
+/////////////////////////////////////////////////////////////////////////////////////////////// BENACHRICHTIGUNG ANFANG
 
 
 for ($k=1; $k<=10; $k++) {
@@ -147,21 +182,12 @@ for ($k=1; $k<=10; $k++) {
         */
     }
 }
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////BENACHRICHTIGUNG ENDE
-///////////////////////////////////////////////////////////////////////////////////////////////LETZTER MONAT ENDE
-
 $nachricht=str_replace('{1}',$spiel_name,$lang['host'][$language]['letztermonat'][19]);
 $aktuell=time();
 $zeiger = mysql_query("INSERT INTO $skrupel_chat (spiel,datum,text,an,von,farbe) values ($spiel,'$aktuell','$nachricht',0,'System','000000');");
 
-///////////////////////////////////////////////////////////////////////////////////////////////MOVIEGIF OPTIONAL ANFANG
 
-$moviegif_verzeichnis = $main_verzeichnis.'extend/moviegif';
+/////////////////////////////////////////////////////////////////////////////////////////////// BENACHRICHTIGUNG ENDE
 
-if ((@file_exists($moviegif_verzeichnis)) and (intval(substr($spiel_extend,0,1))==1)) {
-    include($moviegif_verzeichnis.'/shot.php');
-}
-///////////////////////////////////////////////////////////////////////////////////////////////MOVIEGIF OPTIONAL END
+///////////////////////////////////////////////////////////////////////////////////////////////LETZTER MONAT ENDE
 ?>

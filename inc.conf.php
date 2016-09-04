@@ -44,7 +44,8 @@ $skrupel_info='skrupel_info';
 $skrupel_ordner='skrupel_ordner';
 $skrupel_scan='skrupel_scan';
 $skrupel_begegnung='skrupel_begegnung';
-
+$skrupel_zugberechnen='skrupel_zugberechnen';
+$skrupel_zugberechnen_daten='skrupel_zugberechnen_daten';
 
 /////////////////////////////////////////////////////////////////////////////////
 

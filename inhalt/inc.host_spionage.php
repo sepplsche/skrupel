@@ -75,7 +75,7 @@ if($module[0]) {
         fclose($fp);
     }
 
-    //arrays f�llen
+    //arrays füllen
     $id_array = array();
     $zeiger_spione = mysql_query("SELECT * FROM $skrupel_schiffe WHERE volk='unknown' AND klasseid=1 AND spiel=$spiel ORDER BY erfahrung DESC, id ASC;");
     while(($spion = mysql_fetch_array($zeiger_spione)) && $spiodatei) {
