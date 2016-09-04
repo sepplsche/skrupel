@@ -608,6 +608,8 @@ if($module[0]) {
                         }
                     }
                 }
+				mysql_query("UPDATE $skrupel_zugberechnen_daten set schiffevernichtet=$schiffevernichtet where sid=$sid");
+
                 if($spiomission == 14 && $zielplanetbesitzer && !$zielsternenbasis && $spionerfahrung >= $spionage_daten[14]['level']) {
                     if(spionerfolg($spionage_daten[14]['wahrscheinlichkeit'], $stufe)) {
                         $success = true;

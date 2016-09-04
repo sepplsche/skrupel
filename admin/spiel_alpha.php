@@ -1021,6 +1021,8 @@ $module = @implode(":", $module);
 
 $zeiger = @mysql_query("INSERT INTO $skrupel_spiele (sid,name,module,oput) values ('$sid','$spielname','$module',$out)");
 @mysql_query("INSERT INTO $skrupel_zugberechnen (sid, step) VALUES ('$sid', 0);");
+@mysql_query("INSERT INTO $skrupel_zugberechnen_daten VALUES ('$sid', 0, 0, 0, 0, 0, 0, 0, 0);");
+
 
 $zeiger = @mysql_query("SELECT id,sid FROM $skrupel_spiele where sid='$sid'");
 $array = @mysql_fetch_array($zeiger);
