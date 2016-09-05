@@ -1,5 +1,4 @@
 <?php
-include ('inc.host_func.php');
 
 if ($main_verzeichnis!='../') $main_verzeichnis='';
 define('DATADIR', $main_verzeichnis.'daten/');

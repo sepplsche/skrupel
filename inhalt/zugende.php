@@ -350,7 +350,7 @@ if ($fuid==5) {
 	$startstep = $step;
 	$last = last();
 	$lasttick = time();
-	$timeout = $lasttick + 10;
+	$timeout = $lasttick + 100;
 
     $fertig = 0;
     for($i=1; $i<=10; $i++) {
@@ -362,6 +362,7 @@ if ($fuid==5) {
 	
 	$main_verzeichnis = '../';
 
+	include('inc.host_func.php');
 	while(time() < $timeout && $step < $last) {
 		include('inc.zugberechnen.step'.$step.'.php');	
 		@mysql_query("UPDATE $skrupel_zugberechnen SET step=$step WHERE sid='$sid';");
@@ -397,8 +398,8 @@ if ($fuid==5) {
 			<tr><td><nobr><center>
 					<img src="<?php echo $bildpfad; ?>/radd.gif" height="46" width="51"><br>
 					<?php 
-						echo $lang['zugende']['wirdberechnet'].'<br>Schritte '.$startstep.' bis '.$step.' von '.$last.' wurden ausgewertet'; 
-						if($step < $last) echo '<br>Fahre fort mit den Schritten '.($step+1).' bis '.$last.'...';
+						echo $lang['zugende']['wirdberechnet'].'<br>Schritte '.$startstep.' bis '.($step-1).' von '.$last.' wurden ausgewertet'; 
+						if($step < $last) echo ' Fahre fort mit den Schritten '.$step.' bis '.$last.'...';
 					?>
 			</center></nobr></td></tr>
 		</table>
