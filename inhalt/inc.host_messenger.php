@@ -16,7 +16,6 @@ for ($i=1; $i<=10; $i++){
         $zeiger = mysql_query("SELECT * FROM $skrupel_user WHERE id={$sprachtemp_1[$spieler]}");
         $sprachtemp_3 = mysql_fetch_array($zeiger);
         $spielersprache[$i] = ($sprachtemp_3['sprache']=='') ? $language : $sprachtemp_3['sprache'];
-
         if (in_array($sprachtemp_3['sprache'], $sprachen)) $sprachen[] = $sprachtemp_3['sprache'];
     }
 }
@@ -29,6 +28,7 @@ if(count($sprachen) == 0) {
     }
 }
 ///////////////////////////////Sprachinclude(nur die benoetigten) Ende
+
 
 if(count($sprachen) == 0) {
     include(LANGUAGEDIR.$language.'/lang.inc.host_messenger.php');

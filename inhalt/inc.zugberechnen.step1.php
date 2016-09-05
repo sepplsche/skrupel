@@ -50,7 +50,6 @@ $neuebasen=0;
 $schiffevernichtet=0;
 $planetenerobert=0;
 $planetenerobertfehl=0;
-mysql_query("UPDATE $skrupel_zugberechnen_daten set schiffevernichtet=$schiffevernichtet where sid=$sid");
 
 mysql_query("DELETE FROM $skrupel_kampf WHERE spiel=$spiel");
 mysql_query("DELETE FROM $skrupel_nebel WHERE spiel=$spiel");
@@ -439,7 +438,7 @@ if ($schiffanzahl>=1) {
         }
     }
 }
-mysql_query("UPDATE $skrupel_zugberechnen_daten set schiffverschollen=$schiffverschollen where sid=$sid");
+mysql_query("UPDATE $skrupel_zugberechnen_daten set schiffverschollen=$schiffverschollen WHERE sid='$sid'");
 ///////////////////////////////////////////////////////////////////////////////////////////////SPRUNGTRIEBWERK ANFANG
 ///////////////////////////////////////////////////////////////////////////////////////////////SUBRAUMVERZERRUNG ANFANG
 
@@ -1500,7 +1499,7 @@ if ($basenanzahl>=1) {
 }
 
 $zeiger_temp = mysql_query("UPDATE $skrupel_sternenbasen set schiffbau_status=0,schiffbau_extra='' where spiel=$spiel");
-mysql_query("UPDATE $skrupel_zugberechnen_daten set neueschiffe=$neueschiffe where sid=$sid");
+mysql_query("UPDATE $skrupel_zugberechnen_daten SET neueschiffe=$neueschiffe WHERE sid='$sid'");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////SCHIFFSBAU ENDE
 
@@ -1817,7 +1816,7 @@ if ($basenanzahl>=1) {
         neuigkeiten(3,"../daten/$rasse/bilder_basen/1.jpg",$besitzer,$lang['host'][$spielersprache[$besitzer]]['basenbauen'][0],array($name));
     }
 }
-mysql_query("UPDATE $skrupel_zugberechnen_daten set neuebasen=$neuebasen where sid=$sid");
+mysql_query("UPDATE $skrupel_zugberechnen_daten set neuebasen=$neuebasen WHERE sid='$sid'");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////STERNENBASEN BAUEN ENDE
 
@@ -3176,7 +3175,7 @@ if ($planetenanzahl>=1) {
         }
     }
 }
-mysql_query("update $skrupel_zugberechnen_daten set neuekolonie=$neuekolonie where sid=$sid");
+mysql_query("update $skrupel_zugberechnen_daten set neuekolonie=$neuekolonie WHERE sid='$sid'");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////PLANETEN NEU BESETZEN ENDE
 ///////////////////////////////////////////////////////////////////////////////////////////////GROSSER METEORITEN ANFANG

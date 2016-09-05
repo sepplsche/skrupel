@@ -297,4 +297,5 @@ if ($schiffanzahl>=1) {
         }
     }
 }
+mysql_query("UPDATE $skrupel_zugberechnen_daten set schiffevernichtet=$schiffevernichtet WHERE sid='$sid'");
 ?>

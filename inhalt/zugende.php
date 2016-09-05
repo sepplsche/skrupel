@@ -332,24 +332,12 @@ if ($fuid==9) {
 
 if ($fuid==6) {
     include ('inc.header.php');
-
-	$step = step($skrupel_zugberechnen, $sid);
-	$last = last();
-
     ?>
     <body onLoad="window.location='zugende.php?fu=5&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>';" text="#000000" bgcolor="#444444" style="background-image:url('<?php echo $bildpfad?>/aufbau/14.gif'); background-attachment:fixed;"  link="#000000" vlink="#000000" alink="#000000" leftmargin="0" rightmargin="0" topmargin="0" marginwidth="0" marginheight="0">
         <center>
             <table border="0" cellspacing="0" cellpadding="0" height="100%">
-                <tr>
-                    <td>
-                        <center>
-                        <img src="<?php echo $bildpfad?>/radd.gif" height="46" width="51">
-                            <br><br>
-                            <?php echo $lang['zugende']['wirdberechnet'].' Schritt '.$step.' von '.$last.'...' ?>
-                        </center>
-                    </td>
-                </tr>
-            </table>
+                <tr><td><center><img src="<?php echo $bildpfad?>/radd.gif" height="46" width="51"><br><?php echo $lang['zugende']['wirdberechnet'].'<br>Werte '.last().' Schritte aus...' ?></center></td></tr>
+            </table> 
         </center>
         <?php
     include ('inc.footer.php');
@@ -359,26 +347,31 @@ if ($fuid==5) {
     include ('inc.header.php');
 
 	$step = step($skrupel_zugberechnen, $sid);
+	$startstep = $step;
 	$last = last();
+	$lasttick = time();
+	$timeout = $lasttick + 10;
 
     $fertig = 0;
     for($i=1; $i<=10; $i++) {
         if($spieler_zug_c[$i]==1) $fertig++;
     }
 	if($fertig>=$spieleranzahl) {
-		$lasttick = time();
 		@mysql_query("UPDATE $skrupel_spiele SET lasttick='$lasttick',spieler_1_zug=0,spieler_2_zug=0,spieler_3_zug=0,spieler_4_zug=0,spieler_5_zug=0,spieler_6_zug=0,spieler_7_zug=0,spieler_8_zug=0,spieler_9_zug=0,spieler_10_zug=0 WHERE sid='$sid';");
 	}
 	
 	$main_verzeichnis = '../';
-    include('inc.zugberechnen.step'.$step.'.php');	
-	
-    @mysql_query("UPDATE $skrupel_zugberechnen SET step='$step' WHERE sid='$sid';");
+
+	while(time() < $timeout && $step < $last) {
+		include('inc.zugberechnen.step'.$step.'.php');	
+		@mysql_query("UPDATE $skrupel_zugberechnen SET step=$step WHERE sid='$sid';");
+		$step++;
+	}
 
 	$redir = "javascript:redirNext();";
 	if ($step == $last) {
 		$redir = "javascript:redirLast();";
-		@mysql_query("UPDATE $skrupel_zugberechnen SET step='0' WHERE sid='$sid';");
+		@mysql_query("UPDATE $skrupel_zugberechnen SET step=0 WHERE sid='$sid';");
 	}
     ?>
     <script language=JavaScript>
@@ -395,15 +388,19 @@ if ($fuid==5) {
             window.location='uebersicht.php?fu=1&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>';
         }
         function redirNext() {
-			window.location='zugende.php?fu=6&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>';
+			window.location='zugende.php?fu=5&uid=<?php echo $uid?>&sid=<?php echo $sid?>&sprache=<?php echo $_GET["sprache"]?>';
         }
     </script>
 	<body onload="<?php echo $redir; ?>" text="#000000" bgcolor="#444444" style="background-image:url('<?php echo $bildpfad?>/aufbau/14.gif'); background-attachment:fixed;" link="#000000" vlink="#000000" alink="#000000" leftmargin="0" rightmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 	<center>
 		<table border="0" height="100%" cellspacing="0" cellpadding="0">
-			<tr>
-			<td><nobr><center><?php echo $lang['zugende']['wurdenausgewertet'].' für Schritt '.$step.' von '.$last ?></center></nobr></td>
-			</tr>
+			<tr><td><nobr><center>
+					<img src="<?php echo $bildpfad; ?>/radd.gif" height="46" width="51"><br>
+					<?php 
+						echo $lang['zugende']['wirdberechnet'].'<br>Schritte '.$startstep.' bis '.$step.' von '.$last.' wurden ausgewertet'; 
+						if($step < $last) echo '<br>Fahre fort mit den Schritten '.($step+1).' bis '.$last.'...';
+					?>
+			</center></nobr></td></tr>
 		</table>
 	</center>
 	<?php

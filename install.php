@@ -776,9 +776,8 @@ INPUT.eingabe
 	    ) ENGINE=MyISAM");
 
 	  @mysql_query("CREATE TABLE $skrupel_zugberechnen_daten (
-	    id INT NOT NULL AUTO_INCREMENT,
-	    sid varchar(20) NOT NULL,
-	    neuekolonie INT NOT NULL,
+		id INT NOT NULL AUTO_INCREMENT,
+		sid varchar(20) NOT NULL,
 		schiffverschollen INT NOT NULL,
 		neuekolonie INT NOT NULL,
 		neueschiffe INT NOT NULL,

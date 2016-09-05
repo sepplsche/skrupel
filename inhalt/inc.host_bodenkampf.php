@@ -270,6 +270,8 @@ for ($i=0; $i<$planetenanzahl;$i++) {
         }
 
     }
+mysql_query("UPDATE $skrupel_zugberechnen_daten set planetenerobert=$planetenerobert WHERE sid='$sid'");
+mysql_query("UPDATE $skrupel_zugberechnen_daten set planetenerobertfehl=$planetenerobertfehl WHERE sid='$sid'");
 
     ////////////////////////////////////////////////////////////////
 

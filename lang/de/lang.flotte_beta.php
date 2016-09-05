@@ -67,9 +67,9 @@ $lang['flottebeta']['projektil']='Projektil';
 $lang['flottebeta']['hangar']='Hangar';
 
 $lang['flottebeta']['leminueberladen'][0]='Der Tank von {1} KT wird um ';
-$lang['flottebeta']['leminueberladen'][1]=' KT &uuml;bertankt';
+$lang['flottebeta']['leminueberladen'][1]=' KT uebertankt';
 $lang['flottebeta']['frachtueberladen'][0]='Der Frachtraum von {1} KT wird um ';
-$lang['flottebeta']['frachtueberladen'][1]=' KT &uuml;berladen';
+$lang['flottebeta']['frachtueberladen'][1]=' KT ueberladen';
 $lang['flottebeta']['transporterraum']='Transporterraum';
 $lang['flottebeta']['frachtraumgroesse']='Frachtraumgr&ouml;sse';
 $lang['flottebeta']['durchfuehren']='Transport durchf&uuml;hren';
