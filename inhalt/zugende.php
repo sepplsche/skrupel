@@ -365,9 +365,10 @@ if ($fuid==5) {
 	include('inc.host_func.php');
 	include('inc.zugberechnen.init.php');
 	while(time() < $timeout && $step < $last) {
+		// sleep(6);
+		$step++;
 		include('inc.zugberechnen.step'.$step.'.php');
 		@mysql_query("UPDATE $skrupel_zugberechnen SET step=$step WHERE sid='$sid';");
-		$step++;
 	}
 
 	$redir = "javascript:redirNext();";
@@ -399,8 +400,8 @@ if ($fuid==5) {
 			<tr><td><nobr><center>
 					<img src="<?php echo $bildpfad; ?>/radd.gif" height="46" width="51"><br>
 					<?php 
-						echo $lang['zugende']['wirdberechnet'].'<br>Schritte '.$startstep.' bis '.($step-1).' von '.$last.' wurden ausgewertet'; 
-						if($step < $last) echo ', Fahre fort mit den Schritten '.$step.' bis '.$last.'...';
+						echo $lang['zugende']['wirdberechnet'].'<br>Schritte '.($startstep+1).' bis '.$step.' von '.$last.' wurden ausgewertet'; 
+						if($step < $last) echo ', Fahre fort mit den Schritten '.($step+1).' bis '.$last.'...';
 					?>
 			</center></nobr></td></tr>
 		</table>
@@ -414,7 +415,7 @@ if ($fuid==5) {
 function step($skrupel_zugberechnen, $sid) {
 	$zeiger = @mysql_query("SELECT step FROM $skrupel_zugberechnen WHERE sid='$sid';");
 	$array = @mysql_fetch_array($zeiger);
-	return $array['step'] + 1;
+	return $array['step'];
 }
 
 function last() {
