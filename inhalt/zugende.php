@@ -350,7 +350,7 @@ if ($fuid==5) {
 	$startstep = $step;
 	$last = last();
 	$lasttick = time();
-	$timeout = $lasttick + 100;
+	$timeout = $lasttick + 20;
 
     $fertig = 0;
     for($i=1; $i<=10; $i++) {
@@ -363,8 +363,9 @@ if ($fuid==5) {
 	$main_verzeichnis = '../';
 
 	include('inc.host_func.php');
+	include('inc.zugberechnen.init.php');
 	while(time() < $timeout && $step < $last) {
-		include('inc.zugberechnen.step'.$step.'.php');	
+		include('inc.zugberechnen.step'.$step.'.php');
 		@mysql_query("UPDATE $skrupel_zugberechnen SET step=$step WHERE sid='$sid';");
 		$step++;
 	}

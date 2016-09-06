@@ -1,10 +1,5 @@
 <?php
 
-if ($main_verzeichnis!='../') $main_verzeichnis='';
-define('DATADIR', $main_verzeichnis.'daten/');
-define('INCLUDEDIR', $main_verzeichnis.'inhalt/');
-define('LANGUAGEDIR', $main_verzeichnis.'lang/');
-
 ///////////////////////////////////////////////////////////////////////////////////////////////TRAKTORSTRAHL UEBERPRUEFEN ANFANG
 
 $zeiger = mysql_query("SELECT id,traktor_id,kox,koy,besitzer,spezialmission,spiel FROM $skrupel_schiffe where spezialmission=21 and spiel=$spiel order by id");
