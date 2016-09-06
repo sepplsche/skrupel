@@ -400,7 +400,7 @@ if ($fuid==5) {
 					<img src="<?php echo $bildpfad; ?>/radd.gif" height="46" width="51"><br>
 					<?php 
 						echo $lang['zugende']['wirdberechnet'].'<br>Schritte '.$startstep.' bis '.($step-1).' von '.$last.' wurden ausgewertet'; 
-						if($step < $last) echo ' Fahre fort mit den Schritten '.$step.' bis '.$last.'...';
+						if($step < $last) echo ', Fahre fort mit den Schritten '.$step.' bis '.$last.'...';
 					?>
 			</center></nobr></td></tr>
 		</table>
