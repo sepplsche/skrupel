@@ -191,7 +191,7 @@ if ($module[2]) {
 
                     $lichtjahre=sqrt(($kox-$t_zielx)*($kox-$t_zielx)+($koy-$t_ziely)*($koy-$t_ziely));
 
-                    if ((($lichtjahre<=93) and (t_scanner==0)) or (($lichtjahre<=130) and (t_scanner==1)) or (($lichtjahre<=161) and (t_scanner==2))) {
+                    if ((($lichtjahre<=93) and ($t_scanner==0)) or (($lichtjahre<=130) and ($t_scanner==1)) or (($lichtjahre<=161) and ($t_scanner==2))) {
                         $ja[$t_besitzer]=1;
 
                         for ($xn=1;$xn<=10;$xn++) {
