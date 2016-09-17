@@ -173,6 +173,7 @@ if ($_GET["fu"]==1) {
             function rechnen(e) {
                 var masse = <?php echo $masse_gesamt; ?>;
                 var warp = document.formular.warpfaktor.value;
+				var warpbonus=2;
                 var lichtjahre = document.formular.lichtjahref.value;
                 var verbrauchpromonat = new Array("0",<?php
                     if ($antrieb==1) { echo '"0","0","0","0","0","0","0","0","0"';
@@ -187,7 +188,7 @@ if ($_GET["fu"]==1) {
                 ?>);
                 parent.parent.mittelinksoben.document.globals.verbrauch.value=verbrauchpromonat[warp];
                 if ((warp>=1)&&(lichtjahre!=0)) {
-                    var monate = Math.round((lichtjahre / (warp*warp)) + 0.5);
+                    var monate = Math.round((lichtjahre / ((warp+warpbonus)*(warp+warpbonus))) + 0.5);
                     var verbrauch = Math.round(lichtjahre*verbrauchpromonat[warp]*masse/100000);
                     if (monate > verbrauch) { verbrauch=monate; }
                     if (verbrauchpromonat[warp]==0) { verbrauch=0; }
