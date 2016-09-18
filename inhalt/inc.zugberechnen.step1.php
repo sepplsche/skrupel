@@ -1254,9 +1254,10 @@ if ($anoanzahl>=1) {
         $ziely=$extras[3];
 
         $warp=12.67;
+		$warpbonus=2;
 
         $lichtjahre=sqrt(($kox-$zielx)*($kox-$zielx)+($koy-$ziely)*($koy-$ziely));
-        $zeit=$lichtjahre/($warp*$warp);
+        $zeit=$lichtjahre/(($warp+$warpbonus)*($warp+$warpbonus));
 
         if ($zeit<=1) {
             if ($extras[0]=='p') {

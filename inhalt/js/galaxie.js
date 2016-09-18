@@ -154,9 +154,10 @@ function kurs_update(zielX, zielY, zielname, zielid, flug, auswahlrand) {
     var masse = dom_globals.masse.value;
     var lichtjahre = Math.sqrt((startX-zielX)*(startX-zielX)+(startY-zielY)*(startY-zielY)).toFixed(2);
     var warp = parent.untenmitte.shipsdetails.document.getElementById("formular").warpfaktor.value;
+	var warpbonus=0;
 
     if (warp>0) {
-        var monate = Math.round((lichtjahre / (warp*warp)) + 0.5);
+        var monate = Math.round((lichtjahre / ((warp + warpbonus) * (warp + warpbonus))) + 0.5);
         var verbrauch = Math.round(lichtjahre*verbrauchpromonat*masse/100000);
         if (monate>verbrauch) { verbrauch=monate; }
         if (verbrauchpromonat==0) { verbrauch=0; }

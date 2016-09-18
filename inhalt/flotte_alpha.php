@@ -22,6 +22,7 @@ if ($_GET["fu"]==1) {
     $mission=$array["mission"];
     $masse_gesamt=$array["masse_gesamt"];
     $lemin=$array["lemin"];
+	$warpbonus=2;
 
     if ($antrieb==0) {
         ?>
@@ -68,7 +69,7 @@ if ($_GET["fu"]==1) {
             $tempy=$ziely;
 
             $lichtjahre=(round((sqrt(($startx-$tempx)*($startx-$tempx)+($starty-$tempy)*($starty-$tempy)))*100))/100;
-            $zeit=round(($lichtjahre / ($warp*$warp)) + 0.5);
+            $zeit=round(($lichtjahre / (($warp+$warpbonus)*($warp+$warpbonus))) + 0.5);
             $lichtjahref=$lichtjahre;
             $lichtjahre="$lichtjahre ".$lang['flottealpha']['lichtjahre'];
             $zeittemp=$zeit;
@@ -97,7 +98,7 @@ if ($_GET["fu"]==1) {
             $tempy=$ziely;
 
             $lichtjahre=(round((sqrt(($startx-$tempx)*($startx-$tempx)+($starty-$tempy)*($starty-$tempy)))*100))/100;
-            $zeit=round(($lichtjahre / ($warp*$warp)) + 0.5);
+            $zeit=round(($lichtjahre / (($warp+$warpbonus)*($warp+$warpbonus))) + 0.5);
             $lichtjahref=$lichtjahre;
             $lichtjahre="$lichtjahre ".$lang['flottealpha']['lichtjahre'];
             $zeittemp=$zeit;
@@ -122,7 +123,7 @@ if ($_GET["fu"]==1) {
             $tempy=$ziely;
 
             $lichtjahre=(round((sqrt(($startx-$tempx)*($startx-$tempx)+($starty-$tempy)*($starty-$tempy)))*100))/100;
-            $zeit=round(($lichtjahre / ($warp*$warp)) + 0.5);
+            $zeit=round(($lichtjahre / (($warp+$warpbonus)*($warp+$warpbonus))) + 0.5);
             $lichtjahref=$lichtjahre;
             $lichtjahre="$lichtjahre ".$lang['flottealpha']['lichtjahre'];
             $zeittemp=$zeit;
@@ -152,7 +153,7 @@ if ($_GET["fu"]==1) {
             $tempy=$ziely;
 
             $lichtjahre=(round((sqrt(($startx-$tempx)*($startx-$tempx)+($starty-$tempy)*($starty-$tempy)))*100))/100;
-            $zeit=round(($lichtjahre / ($warp*$warp)) + 0.5);
+            $zeit=round(($lichtjahre / (($warp+$warpbonus)*($warp+$warpbonus))) + 0.5);
             $lichtjahref=$lichtjahre;
             $lichtjahre="$lichtjahre ".$lang['flottealpha']['lichtjahre'];
             $zeittemp=$zeit;
@@ -188,7 +189,7 @@ if ($_GET["fu"]==1) {
                 ?>);
                 parent.parent.mittelinksoben.document.globals.verbrauch.value=verbrauchpromonat[warp];
                 if ((warp>=1)&&(lichtjahre!=0)) {
-                    var monate = Math.round((lichtjahre / ((warp+warpbonus)*(warp+warpbonus))) + 0.5);
+                    var monate = Math.round((lichtjahre / ((warp + warpbonus) * (warp + warpbonus))) + 0.5);
                     var verbrauch = Math.round(lichtjahre*verbrauchpromonat[warp]*masse/100000);
                     if (monate > verbrauch) { verbrauch=monate; }
                     if (verbrauchpromonat[warp]==0) { verbrauch=0; }
@@ -395,6 +396,8 @@ if ($_GET["fu"]==2) {
         $verbrauchf=$_POST["verbrauchf"];
         $benzin2=$_POST["benzin2"];
         $kursmodus=$_POST["pathfind"];
+		
+		$warpbonus=2;
 
         if ($warpfaktor==0) {
 
@@ -417,7 +420,7 @@ if ($_GET["fu"]==2) {
             } else {
 
                 $lichtjahre=sqrt(($koxf-$zielxf)*($koxf-$zielxf)+($koyf-$zielyf)*($koyf-$zielyf));
-                $zeit=round(($lichtjahre / ($warpfaktor*$warpfaktor)) + 0.5);
+                $zeit=round(($lichtjahre / (($warpfaktor+$warpbonus)*($warpfaktor+$warpbonus))) + 0.5);
                 $verbrauch=round($lichtjahre*$verbrauchf*$masse_gesamt/100000);
 
                 if ($verbrauch<$zeit) { $verbrauch=$zeit; }
