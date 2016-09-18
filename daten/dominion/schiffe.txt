@@ -1,0 +1,21 @@
+Kressari Freighter:1:1:kressari.jpg:kressarikl.jpg:10:2:2:3:0:0:0:70:200:1:3:30:0:
+Nerok Scout:2:1:nerok.jpg:nerokkl.jpg:30:15:10:10:1:0:0:50:100:1:12:30:0:
+Netel Destroyer:3:2:netel.jpg:netelkl.jpg:50:25:15:12:1:3:0:70:120:2:56:100:0:
+EIMS 1300:4:3:merchantman.jpg:merchantmankl.jpg:65:4:4:6:0:0:0:200:250:1:12:60:0:
+Rasilak Destroyer:5:3:rasilak.jpg:rasilakkl.jpg:70:30:20:20:4:0:0:50:120:2:60:80:0:
+Galor Cruiser:6:4:galor_1.jpg:galor_1kl.jpg:150:50:35:35:4:0:0:120:200:2:290:160:0:
+Hideki:7:4:hideki.jpg:hidekikl.jpg:80:25:20:20:5:0:0:20:140:1:40:60:0:
+Dreadnought:8:5:dreadnought.jpg:dreadnoughtkl.jpg:120:40:28:32:2:0:0:0:50:1:0:40:000000000000000000000003:<b>Subraumverzerrer (Stufe 3)</b><br><br>Eine kollabierende Subraumverzerrung sendet eine Schockwelle in den Raum, welche im Umkreis von 83 Lichtjahren sämtliches Leben vernichtet. Das Schiff wird dabei zerstört.
+Orbital Defense:9:5:weaponplatform.jpg:weaponplatformkl.jpg:120:34:20:20:2:5:0:30:0:0:0:140:0000000000000000000000001:<b>Erweiterte Sensorenphalanx</b><br><br>Mit Hilfe der Erweiterten Sensorenphalanx ist es möglich, die Sensorenreichweite von 47 auf 85 Lichtjahre zu erweitern.
+Galor II Cruiser:10:5:galor_2.jpg:galor_2kl.jpg:220:80:45:55:4:4:0:30:150:2:306:180:0:
+Arridor:11:6:arridor.jpg:arridorkl.jpg:180:85:26:28:1:0:0:1200:600:2:12:120:0:
+Tonga Class Cruiser:12:6:tonga.jpg:tongakl.jpg:220:65:32:40:1:7:0:60:180:3:420:240:0:
+Keldon Battle Cruiser:13:6:keldon.jpg:keldonkl.jpg:320:100:50:65:5:2:0:400:250:2:380:220:0:
+Obsidian Science Vessel:14:7:obsidian.jpg:obsidiankl.jpg:300:50:50:50:3:0:0:300:300:2:310:120:0:
+Jem-Hadar Attack Fighter:15:7:attack.jpg:attackkl.jpg:110:20:50:30:8:0:0:30:140:1:12:80:0:
+Jem-Hadar Battle Cruiser:16:8:battlecruiser.jpg:battlecruiserkl.jpg:360:70:120:90:10:0:0:60:200:2:900:280:0:		
+Repair Facility:17:9:repair_dock.jpg:repair_dockkl.jpg:1070:300:300:530:6:0:4:500:900:10:960:560:00000001010000000000000000000000000009:<b>Quarkreorganisator</b><br><br>Der Sternenzerstörer Ex ist in der Lage auf subatomarer Ebene Quarks zu reorganisieren und so pro Monat aus 113 KT Vorräten und 113 KT Vomisaan 113 KT Lemin zu gewinnen.<br><br><b>Reparatureinheit</b><br><br>Mit Unterstützung dieser Klasse sind Schiffe in der Lage, pro Monat einen Schaden von 9% an ihrer Hülle zu beheben.
+Breen Strike-Fleet:18:9:breen.jpg:breenkl.jpg:500:120:220:140:8:0:8:300:210:3:460:300:0:
+Karemma Freighter:19:10:5.jpg:5_klein.jpg:220:125:13:18:0:0:0:2600:120:4:90:160:0:
+Jem-Hadar Battle Ship:20:10:battleship.jpg:battleshipkl.jpg:600:180:250:200:10:8:0:500:600:4:1290:700:0:
+Orbital Ship Yard:21:10:orbitalshipyard.jpg:orbitalshipyardkl.jpg:980:625:240:160:8:0:2:3200:0:0:1040:820:09111:<b>SubpartikelCluster</b><br><br>Mittels Vorräten generiert der SubpartikelCluster Mineralien. Aus 9 KT Vorrat werden auf diese Weise jeweils 1 KT Baxterium, 1KT Rennurbin sowie 1 KT Vomisaan gewonnen.<br>Dieser Prozess kann maximal 287 mal pro Monat in Gang gesetzt werden.
