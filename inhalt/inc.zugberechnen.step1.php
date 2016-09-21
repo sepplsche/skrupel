@@ -752,7 +752,6 @@ if ($schiffanzahl>=1) {
         $schaden=$array["schaden"];
         $flugbonus=1;
         $spritweniger=0;
-		$warpbonus=2;
         $erfahrung=$array["erfahrung"];
         $energetik_anzahl=$array["energetik_anzahl"];
         $projektile_anzahl=$array["projektile_anzahl"];
@@ -820,14 +819,12 @@ if ($schiffanzahl>=1) {
             $zielx=$array_temp["kox"];
             $ziely=$array_temp["koy"];
             if(($flug==3)and(($spezialmission_2==8)or($antrieb_2==2))and ($tarnfeld_2< 2)){
-				$n_gescannt=1;
-				
-				$scan_temp_reichweite=(($spezialmission==11)?85:(($spezialmission==12)?116:47))+($warp*$warp);
-				if((($zielx-$kox)*($zielx-$kox))+(($ziely-$koy)*($ziely-$koy))<=($scan_temp_reichweite*$scan_temp_reichweite)){
-					$n_gescannt=0;
-				}
-                
-				$zeiger_temp2 = mysql_query("SELECT besitzer FROM $skrupel_schiffe where (
+	    	$n_gescannt=1;
+		$scan_temp_reichweite=(($spezialmission==11)?85:(($spezialmission==12)?116:47))+($warp*$warp);
+		if((($zielx-$kox)*($zielx-$kox))+(($ziely-$koy)*($ziely-$koy))<=($scan_temp_reichweite*$scan_temp_reichweite)){
+			$n_gescannt=0;
+		}
+                $zeiger_temp2 = mysql_query("SELECT besitzer FROM $skrupel_schiffe where (
                     (sqrt(((kox-$zielx)*(kox-$zielx))+((koy-$ziely)*(koy-$ziely)))<=47) and ((spezialmission<>11) and (spezialmission<>12)))
                      or ((sqrt(((kox-$zielx)*(kox-$zielx))+((koy-$ziely)*(koy-$ziely)))<=85) and (spezialmission=11))
                      or  ((sqrt(((kox-$zielx)*(kox-$zielx))+((koy-$ziely)*(koy-$ziely)))<=116) and (spezialmission=12))
@@ -870,107 +867,102 @@ if ($schiffanzahl>=1) {
 
         if ((($kox!=$zielx) or ($koy!=$ziely)) and ($overdrive_raus==0)) {
             $lichtjahre=sqrt(($kox-$zielx)*($kox-$zielx)+($koy-$ziely)*($koy-$ziely));
-            #$zeit=$lichtjahre/($warp*$warp*$flugbonus);
-			$streckemehr=($warp+$warpbonus)*($warp+$warpbonus)*$flugbonus;
+            $zeit=$lichtjahre/($warp*$warp*$flugbonus);
             if (($status==2) and ($warp<=3) and ($antrieb<=3)) {
-                #$zeit=$lichtjahre/(4*4);
-				$streckemehr=(4+$warpbonus)*(4+$warpbonus);
+                $zeit=$lichtjahre/(4*4);
             }
             if ($antrieb==1) {
                 $zufall=mt_rand(1,100);
-				if ($zufall<=11) {
-					#$zeit=$lichtjahre/(9*9);
-					$streckemehr=(9+$warpbonus)*(9+$warpbonus);
-					neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['flug'][1],array($name));
-				}
-			}
+            if ($zufall<=11) {
+                $zeit=$lichtjahre/(9*9);
+                neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['flug'][1],array($name));
+            }
+        }
 
-			$zeit=$lichtjahre/$streckemehr;
-			
-			$verbrauch=$verbrauchpromonat[$warp];
-			if ($zeit<=1) {
-				$kox=$zielx;$koy=$ziely;
-				$verbrauch=floor($lichtjahre*$verbrauch*$masse_gesamt/100000);
-			} else {
-				$kox=$kox+(($zielx-$kox)/$zeit);
-				$koy=$koy+(($ziely-$koy)/$zeit);
-				$verbrauch=floor($warp*$warp*$verbrauch*$masse_gesamt/100000);
-			}
+        $verbrauch=$verbrauchpromonat[$warp];
+        if ($zeit<=1) {
+            $kox=$zielx;$koy=$ziely;
+            $verbrauch=floor($lichtjahre*$verbrauch*$masse_gesamt/100000);
+        } else {
+            $kox=$kox+(($zielx-$kox)/$zeit);
+            $koy=$koy+(($ziely-$koy)/$zeit);
+            $verbrauch=floor($warp*$warp*$verbrauch*$masse_gesamt/100000);
+        }
 
-			$verbrauch=$verbrauch-($verbrauch/100*$spritweniger);
-			if ($verbrauch==0) { $verbrauch=1; }
-			if ($verbrauchpromonat[$warp]==0) { $verbrauch=0; }
+        $verbrauch=$verbrauch-($verbrauch/100*$spritweniger);
+        if ($verbrauch==0) { $verbrauch=1; }
+        if ($verbrauchpromonat[$warp]==0) { $verbrauch=0; }
 
-			if (($antrieb==4) and ($verbrauch>=1)) {
-				$zufall=mt_rand(1,100);
-				if ($zufall<=17) {
-					$verbrauchneu=floor(37*($verbrauch/100));
-					neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['flug'][2],array($name,$verbrauch,$verbrauchneu));
-					$verbrauch=$verbrauchneu;
-				}
-			}
+        if (($antrieb==4) and ($verbrauch>=1)) {
+            $zufall=mt_rand(1,100);
+            if ($zufall<=17) {
+                $verbrauchneu=floor(37*($verbrauch/100));
+                neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['flug'][2],array($name,$verbrauch,$verbrauchneu));
+                $verbrauch=$verbrauchneu;
+            }
+        }
 
-			if (($verbrauch>$lemin) and ($fracht_min2>=1) and ($fracht_min2+$lemin>=$verbrauch) and ($antrieb==6)) {
-				$fehlt=$verbrauch-$lemin;
-				$fracht_min2=$fracht_min2-$fehlt;
-				$lemin=$verbrauch;
-			}
+        if (($verbrauch>$lemin) and ($fracht_min2>=1) and ($fracht_min2+$lemin>=$verbrauch) and ($antrieb==6)) {
+            $fehlt=$verbrauch-$lemin;
+            $fracht_min2=$fracht_min2-$fehlt;
+            $lemin=$verbrauch;
+        }
 
-			if ($verbrauch>$lemin) { $rauswurf=2; } else {
-				$lemin=$lemin-$verbrauch;
+        if ($verbrauch>$lemin) { $rauswurf=2; } else {
+            $lemin=$lemin-$verbrauch;
 
-				if ($zeit<=1) {
-					$streckemehr=$lichtjahre;
+            if ($zeit<=1) {
+                $streckemehr=$lichtjahre;
 
-					if ($flug==1) {
-						$flug_neu=0;
-						$status=1;
-						neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['flug'][3],array($name));
-					}
-					if ($flug==2) {
-						$flug_neu=0;
-						$status=2;
-						if ($routing_status>=1) {
-							neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['flug'][4],array($name));
-						} else {
-							neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['flug'][5],array($name));
-						}
-					}
-					if ($flug==4) {
-						$flug_neu=$flug;
-						$status=1;
-					}
-					if ($flug==3) {
-						$flug_neu=0;
-						$status=1;
-					}
+                if ($flug==1) {
+                    $flug_neu=0;
+                    $status=1;
+                    neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['flug'][3],array($name));
+                }
+                if ($flug==2) {
+                    $flug_neu=0;
+                    $status=2;
+                    if ($routing_status>=1) {
+                        neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['flug'][4],array($name));
+                    } else {
+                        neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['flug'][5],array($name));
+                    }
+                }
+                if ($flug==4) {
+                    $flug_neu=$flug;
+                    $status=1;
+                }
+                if ($flug==3) {
+                    $flug_neu=0;
+                    $status=1;
+                }
 
-				} else {
-					#$streckemehr=$warp*$warp;
-					$flug_neu=$flug;
-					$status=1;
-				}
-			}
-			if ($rauswurf==1) {
+            } else {
+                $streckemehr=$warp*$warp;
+                $flug_neu=$flug;
+                $status=1;
+            }
+        }
+        if ($rauswurf==1) {
 
-				if (($flug==1) or ($flug==2)) {
-					$zeiger2 = mysql_query("UPDATE $skrupel_schiffe set kox_old=$kox_old,koy_old=$koy_old,strecke=strecke+$streckemehr,fracht_min2=$fracht_min2,kox=$kox, koy=$koy, lemin=$lemin, flug=$flug_neu, status=$status where id=$shid");
-				}
-				if (($flug==4) or ($flug==3)) {
-					$zeiger2 = mysql_query("UPDATE $skrupel_schiffe set kox_old=$kox_old,koy_old=$koy_old,strecke=strecke+$streckemehr,fracht_min2=$fracht_min2,kox=$kox, koy=$koy, zielx=$zielx, ziely=$ziely, lemin=$lemin, flug=$flug_neu, status=$status where id=$shid");
-				}
+            if (($flug==1) or ($flug==2)) {
+                $zeiger2 = mysql_query("UPDATE $skrupel_schiffe set kox_old=$kox_old,koy_old=$koy_old,strecke=strecke+$streckemehr,fracht_min2=$fracht_min2,kox=$kox, koy=$koy, lemin=$lemin, flug=$flug_neu, status=$status where id=$shid");
+            }
+            if (($flug==4) or ($flug==3)) {
+                $zeiger2 = mysql_query("UPDATE $skrupel_schiffe set kox_old=$kox_old,koy_old=$koy_old,strecke=strecke+$streckemehr,fracht_min2=$fracht_min2,kox=$kox, koy=$koy, zielx=$zielx, ziely=$ziely, lemin=$lemin, flug=$flug_neu, status=$status where id=$shid");
+            }
 
-				$stat_lichtjahre[$besitzer]=$stat_lichtjahre[$besitzer]+$streckemehr;
-				if ($spezialmission==21) {
-					$zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set kox=$kox, koy=$koy, status=$status where id=$traktor_id and spiel=$spiel");
-				}
-			} else {
-				$zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set flug=0,warp=0,zielx=0,ziely=0,zielid=0 where id=$shid");
-				$zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set routing_schritt=0,routing_status=0,routing_koord='',routing_id='',routing_mins='',routing_warp=0,routing_tank=0,routing_rohstoff=0 where id=$shid");
-				neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['flug'][6],array($name));
-			}
-		} elseif (($overdrive_raus==1)and(($flug==4) or ($flug==3))and ($zielid!=-1)){
-			$zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set zielx=$zielx,ziely=$ziely where id=$shid");
+            $stat_lichtjahre[$besitzer]=$stat_lichtjahre[$besitzer]+$streckemehr;
+            if ($spezialmission==21) {
+                $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set kox=$kox, koy=$koy, status=$status where id=$traktor_id and spiel=$spiel");
+            }
+        } else {
+            $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set flug=0,warp=0,zielx=0,ziely=0,zielid=0 where id=$shid");
+            $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set routing_schritt=0,routing_status=0,routing_koord='',routing_id='',routing_mins='',routing_warp=0,routing_tank=0,routing_rohstoff=0 where id=$shid");
+            neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['flug'][6],array($name));
+        }
+    }elseif(($overdrive_raus==1)and(($flug==4) or ($flug==3))and ($zielid!=-1)){
+        $zeiger_temp = mysql_query("UPDATE $skrupel_schiffe set zielx=$zielx,ziely=$ziely where id=$shid");
         }
     }
 }
