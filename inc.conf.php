@@ -11,8 +11,8 @@ $database="skrupel";
 
 //Adminzugangsdaten
 
-$admin_login="admin";
-$admin_pass="password";
+$admin_login="skrupel";
+$admin_pass="skrupel";
 
 //Absenderemail des Servers
 
