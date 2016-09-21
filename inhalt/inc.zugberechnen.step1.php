@@ -650,7 +650,7 @@ if($schiffanzahl>0){
         }else{
             $schalter=0;
         }
-        if($schalter){
+        if($schalter || $count > 1000){
             $kreisel_anzahl++;
             $j=$i;
             $anzahl_schlange=0;
@@ -752,7 +752,7 @@ if ($schiffanzahl>=1) {
         $schaden=$array["schaden"];
         $flugbonus=1;
         $spritweniger=0;
-		$warpbonus=2;
+		$warpbonus=1;
         $erfahrung=$array["erfahrung"];
         $energetik_anzahl=$array["energetik_anzahl"];
         $projektile_anzahl=$array["projektile_anzahl"];
