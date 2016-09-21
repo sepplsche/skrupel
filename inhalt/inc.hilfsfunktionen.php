@@ -30,7 +30,6 @@ function int_get($key) {
     return false;
 }
 function str_post($key) {
-    //todo, optionales escapen?
     if(isset($_POST[$key])) {
         if(strlen($_POST[$key]) > 0) {
             return $_POST[$key];
@@ -39,7 +38,6 @@ function str_post($key) {
     return false;
 }
 function str_get($key) {
-    //todo, optionales escapen?
     if(isset($_GET[$key])) {
         if(strlen($_GET[$key]) > 0) {
             return $_GET[$key];
