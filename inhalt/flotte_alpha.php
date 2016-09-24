@@ -237,7 +237,7 @@ if ($_GET["fu"]==1) {
                     ant.innerHTML='<?php echo $zielname; ?>';
 
                     var ant=document.getElementById('zeit');
-                    ant.innerHTML='<?php echo $zeit."asdf"; ?>';
+                    ant.innerHTML='<?php echo $zeit; ?>';
 
                     formularr = document.getElementById("formular");
                     formularr.lichtjahref.value=<?php echo $lichtjahref; ?>;
