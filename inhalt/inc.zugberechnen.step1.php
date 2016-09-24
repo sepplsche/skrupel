@@ -911,6 +911,8 @@ if ($schiffanzahl>=1) {
 				$lemin=$verbrauch;
 			}
 
+	        $streckemehr=0;
+
 			if ($verbrauch>$lemin) { $rauswurf=2; } else {
 				$lemin=$lemin-$verbrauch;
 
