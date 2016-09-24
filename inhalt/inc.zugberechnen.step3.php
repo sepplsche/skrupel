@@ -276,7 +276,7 @@ if ($anoanzahl>=1) {
         $warp=12.67;
 
         $lichtjahre=sqrt(($kox-$zielx)*($kox-$zielx)+($koy-$ziely)*($koy-$ziely));
-        $zeit=$lichtjahre/($warp*$warp);
+        $zeit=$lichtjahre/strecke($warp);
 
         if ($zeit<=1) {
             if ($extras[0]=='p') {

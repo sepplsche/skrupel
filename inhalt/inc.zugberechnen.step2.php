@@ -342,7 +342,7 @@ if ($schiffanzahl>=1) {
 
         if ((($kox!=$zielx) or ($koy!=$ziely)) and ($overdrive_raus==0)) {
             $lichtjahre=sqrt(($kox-$zielx)*($kox-$zielx)+($koy-$ziely)*($koy-$ziely));
-			$streckemehr=$warp*$warp*$flugbonus;
+			$streckemehr=strecke($warp)*$flugbonus;
             if (($status==2) and ($warp<=3) and ($antrieb<=3)) {
 				$streckemehr=4*4;
             }
@@ -362,7 +362,7 @@ if ($schiffanzahl>=1) {
 			} else {
 				$kox=$kox+(($zielx-$kox)/$zeit);
 				$koy=$koy+(($ziely-$koy)/$zeit);
-				$verbrauch=floor($warp*$warp*$verbrauch*$masse_gesamt/100000);
+				$verbrauch=floor(pow($warp, 2)*$verbrauch*$masse_gesamt/100000);
 			}
 
 			$verbrauch=$verbrauch-($verbrauch/100*$spritweniger);
