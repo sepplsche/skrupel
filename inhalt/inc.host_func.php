@@ -367,7 +367,22 @@ return $salt;
 }
 
 function strecke($warp) {
-    return pow($warp+2, 2);
+    return pow($warp + bonus($warp), 2);
+}
+
+function bonus($warp) {
+	switch ($warp) {
+		case 1: return 0; // Sonnensegel (ab und zu 81 LJ)
+		case 2: return 3; // Tarnung = 25 LJ
+		case 3: return 3; // Enttarnung = 36 LJ
+		case 4: return 2; // weniger Verbrauch = 36 LJ
+		case 5: return 1; // Signaturmaskierung = 36 LJ
+		case 6: return 1; // alternativer Treibstoff = 49 LJ
+		case 7: return 0; // ab und zu keine Tarnung, höchster Antrieb mit Traktorstrahl = 49 LJ
+		case 8: return 1; // kein Traktorstrahl = 81 LJ
+		case 9: return 2; // kein Traktorstrahl und 1/2-Frachtraum = 121 LJ
+	}
+	return 0;
 }
 
 ?>
