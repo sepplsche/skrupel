@@ -792,7 +792,6 @@ if ($schiffanzahl>=1) {
             }
         }
         ////////////////////////////
-        $streckemehr=0;
 
         if ($antrieb==1) { $verbrauchpromonat = array ("0","0","0","0","0","0","0","0","0","0"); }
         if ($antrieb==2) { $verbrauchpromonat = array ("0","100","107.5","300","400","500","600","700","800","900"); }
@@ -870,17 +869,18 @@ if ($schiffanzahl>=1) {
 
         if ((($kox!=$zielx) or ($koy!=$ziely)) and ($overdrive_raus==0)) {
             $lichtjahre=sqrt(($kox-$zielx)*($kox-$zielx)+($koy-$ziely)*($koy-$ziely));
-            $zeit=$lichtjahre/($warp*$warp*$flugbonus);
+			$streckemehr=$warp*$warp*$flugbonus;
             if (($status==2) and ($warp<=3) and ($antrieb<=3)) {
-                $zeit=$lichtjahre/(4*4);
+				$streckemehr=4*4;
             }
             if ($antrieb==1) {
                 $zufall=mt_rand(1,100);
 				if ($zufall<=11) {
-					$zeit=$lichtjahre/(9*9);
+					$streckemehr=9*9;
 					neuigkeiten(2,"../daten/$volk/bilder_schiffe/$bild_gross",$besitzer,$lang['host'][$spielersprache[$besitzer]]['flug'][1],array($name));
 				}
 			}
+			$zeit=$lichtjahre/$streckemehr;
 
 			$verbrauch=$verbrauchpromonat[$warp];
 			if ($zeit<=1) {
@@ -911,14 +911,10 @@ if ($schiffanzahl>=1) {
 				$lemin=$verbrauch;
 			}
 
-	        $streckemehr=0;
-
 			if ($verbrauch>$lemin) { $rauswurf=2; } else {
 				$lemin=$lemin-$verbrauch;
 
 				if ($zeit<=1) {
-					$streckemehr=$lichtjahre;
-
 					if ($flug==1) {
 						$flug_neu=0;
 						$status=1;
@@ -941,9 +937,7 @@ if ($schiffanzahl>=1) {
 						$flug_neu=0;
 						$status=1;
 					}
-
 				} else {
-					$streckemehr=$warp*$warp;
 					$flug_neu=$flug;
 					$status=1;
 				}
