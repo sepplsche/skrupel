@@ -371,6 +371,7 @@ function strecke($warp) {
 }
 
 function bonus($warp) {
+	error_log("Warp: ".$warp);
 	switch ($warp) {
 		case 1: return 0; // Sonnensegel (ab und zu 81 LJ)
 		case 2: return 3; // Tarnung = 25 LJ
