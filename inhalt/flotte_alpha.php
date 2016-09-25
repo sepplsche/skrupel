@@ -67,7 +67,7 @@ if ($_GET["fu"]==1) {
             $tempx=$zielx;
             $tempy=$ziely;
 
-			// TODO seppl-2: gui auf neue warpstufen umbauen
+			// TODO seppl-4: gui auf neue warpstufen umbauen
 
             $lichtjahre=(round((sqrt(($startx-$tempx)*($startx-$tempx)+($starty-$tempy)*($starty-$tempy)))*100))/100;
             $zeit=round(($lichtjahre / ($warp*$warp)) + 0.5);
