@@ -293,7 +293,6 @@ if ($schiffanzahl>=1) {
             if(($flug==3)and(($spezialmission_2==8)or($antrieb_2==2))and ($tarnfeld_2< 2)){
 				$n_gescannt=1;
 			
-				// TODO seppl-1: rausfinden wo und warum überall warp*warp gemacht wird, und wo man es mit (warp+warpbonus)*(warp+warpbonus) ersetzen kann
 				$scan_temp_reichweite=(($spezialmission==11)?85:(($spezialmission==12)?116:47))+($warp*$warp);
 				if((($zielx-$kox)*($zielx-$kox))+(($ziely-$koy)*($ziely-$koy))<=($scan_temp_reichweite*$scan_temp_reichweite)){
 					$n_gescannt=0;
