@@ -6,8 +6,8 @@
 - enthält Skrupel KI von: https://sourceforge.net/projects/skrupelki/
 - enthält Skrupel xstats von: https://sourceforge.net/projects/skrupelxtension/
 
-### eigene changes bisher
+### eigene Changes bisher
 
-- diverse bug fixes
-- zugberechnen in merhere schritte aufgeteilt, damit es kein timeout beim zugebrechnen gibt
-- warpstufen angepasst, damit es bissi schneller geht
+- diverse Bug Fixes
+- Zugberechnen in merhere Schritte aufgeteilt, damit es keinen Timeout merh gibt
+- Warpstufen angepasst, damit es bissi schneller geht
