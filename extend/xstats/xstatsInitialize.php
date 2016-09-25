@@ -10,15 +10,15 @@ $db = @mysql_select_db($database,$conn);
 $result = @mysql_query("SHOW TABLES LIKE 'skrupel_xstats'") or die(mysql_error());
 if(@mysql_num_rows($result) != 1) {
     @mysql_query("CREATE TABLE skrupel_xstats (id INTEGER PRIMARY KEY AUTO_INCREMENT,
-			gameid INTEGER NOT NULL,
-			playerindex INTEGER NOT NULL,
-			playerid INTEGER NOT NULL, 
-			turn INTEGER NOT NULL, 
-			shipcount INTEGER NOT NULL,
-                        freightercount INTEGER NOT NULL,
-			shipmasscount INTEGER NOT NULL, 
-			planetcount INTEGER NOT NULL,
-                        allplanetcount INTEGER NOT NULL,
+						gameid INTEGER NOT NULL,
+						playerindex INTEGER NOT NULL,
+						playerid INTEGER NOT NULL, 
+						turn INTEGER NOT NULL, 
+						shipcount INTEGER NOT NULL,
+						freightercount INTEGER NOT NULL,
+						shipmasscount INTEGER NOT NULL, 
+						planetcount INTEGER NOT NULL,
+						allplanetcount INTEGER NOT NULL,
                         colonistcount INTEGER NOT NULL,
                         stationcount INTEGER NOT NULL,
                         stationcountstd INTEGER NOT NULL,
@@ -39,9 +39,9 @@ if(@mysql_num_rows($result) != 1) {
                         battlecount INTEGER NOT NULL,
                         battlewoncount INTEGER NOT NULL,
                         coloniestakencount INTEGER NOT NULL,
-                        lj FLOAT NOT NULL,
-                FOREIGN KEY (playerid) REFERENCES skrupel_user(id),
-                FOREIGN KEY (gameid) REFERENCES skrupel_spiele(id));");
+						lj FLOAT NOT NULL,
+            FOREIGN KEY (playerid) REFERENCES skrupel_user(id),
+            FOREIGN KEY (gameid) REFERENCES skrupel_spiele(id)) ENGINE=MyISAM;");
     @mysql_query("CREATE INDEX skrupel_xstats_playerindex ON skrupel_xstats(playerindex);");
     @mysql_query("CREATE INDEX skrupel_xstats_turn ON skrupel_xstats(turn);");
     @mysql_query("CREATE TABLE skrupel_xstats_ships (
@@ -75,7 +75,7 @@ if(@mysql_num_rows($result) != 1) {
                         buildposx INT NOT NULL DEFAULT '0',
                         buildposy INT NOT NULL DEFAULT '0',
                         buildplanetname VARCHAR( 255 ) NOT NULL,
-                FOREIGN KEY (gameid) REFERENCES skrupel_spiele(id));");
+                FOREIGN KEY (gameid) REFERENCES skrupel_spiele(id)) ENGINE=MyISAM;");
     @mysql_query("CREATE INDEX skrupel_xstats_ships_shipid ON skrupel_xstats_ships(shipid);");
     @mysql_query("CREATE INDEX skrupel_xstats_ships_shipclassid ON skrupel_xstats_ships(shipclassid);");
     @mysql_query("CREATE TABLE skrupel_xstats_shipowner (
@@ -88,7 +88,7 @@ if(@mysql_num_rows($result) != 1) {
                 FOREIGN KEY (gameid) REFERENCES skrupel_spiele(id),
                 FOREIGN KEY (shipid) REFERENCES skrupel_xstats_ships(shipid),
                 FOREIGN KEY (ownerid) REFERENCES skrupel_user(id)
-                );");
+                ) ENGINE=MyISAM;");
     @mysql_query("CREATE INDEX skrupel_xstats_shipowner_ownerindex ON skrupel_xstats_shipowner(ownerindex);");
     @mysql_query("CREATE INDEX skrupel_xstats_shipowner_turn ON skrupel_xstats_shipowner(turn);");
     @mysql_query("CREATE TABLE skrupel_xstats_shipvsship (
@@ -102,7 +102,7 @@ if(@mysql_num_rows($result) != 1) {
                 FOREIGN KEY (gameid) REFERENCES skrupel_spiele(id),
                 FOREIGN KEY (shipid) REFERENCES skrupel_xstats_ships(shipid),
                 FOREIGN KEY (enemyshipid) REFERENCES skrupel_xstats_ships(shipid)
-                );");
+                ) ENGINE=MyISAM;");
     @mysql_query("CREATE INDEX skrupel_xstats_ships_fightresult ON skrupel_xstats_shipvsship(fightresult);");
     @mysql_query("CREATE INDEX skrupel_xstats_ships_turn ON skrupel_xstats_shipvsship(turn);");
     @mysql_query("CREATE TABLE skrupel_xstats_turntime (
@@ -111,7 +111,7 @@ if(@mysql_num_rows($result) != 1) {
                         turn INT NOT NULL ,
                         turnendtime VARCHAR(20) NOT NULL ,
                 FOREIGN KEY (gameid) REFERENCES skrupel_spiele(id)
-                );");
+                ) ENGINE=MyISAM;");
     @mysql_query("CREATE INDEX skrupel_xstats_turntime_turn ON skrupel_xstats_turntime(turn);");
     @mysql_query("CREATE TABLE skrupel_xstats_shipvsplanet (
                         id int(11) NOT NULL auto_increment PRIMARY KEY,
@@ -127,12 +127,12 @@ if(@mysql_num_rows($result) != 1) {
                         eventtype int(11) NOT NULL default '0',
                 FOREIGN KEY (gameid) REFERENCES skrupel_spiele(id),
                 FOREIGN KEY (shipid) REFERENCES skrupel_xstats_ships(shipid)
-                );");
+                ) ENGINE=MyISAM;");
     @mysql_query("CREATE INDEX skrupel_xstats_shipvsplanet_eventtype ON skrupel_xstats_shipvsplanet(eventtype);");    
     @mysql_query("CREATE TABLE skrupel_xstats_version (
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                         version VARCHAR( 20 ) NOT NULL
-                );");
+                ) ENGINE=MyISAM;");
     @mysql_query("INSERT INTO skrupel_xstats_version(version)VALUES('1');");
     echo("Skrupel XStats initialized successfully.");
 }else {
