@@ -193,7 +193,7 @@ function xstats_displayMaxSum( $gameId, $colName, $maxTurn, $xstatsAvailablePlay
         $computedPlayerIndex = 0;
         for($currentTurn=1; $currentTurn<=$maxTurn; $currentTurn++) {
             $query = "SELECT {$colName},playerid FROM skrupel_xstats WHERE playerindex={$playerIndex} AND gameid={$gameId} AND turn={$currentTurn}";
-            $result = @mysql_query($query) or die(mysql_error());
+            $result = @mysql_query($query) or die($query.": ".mysql_error());
             $result = @mysql_fetch_array($result);
             $colNameResult = $result[$colName];
             if( !is_null( $colNameResult )) {
