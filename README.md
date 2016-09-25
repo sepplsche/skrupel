@@ -9,5 +9,5 @@
 ### eigene Changes bisher
 
 - diverse Bug Fixes
-- Zugberechnen in merhere Schritte aufgeteilt, damit es keinen Timeout merh gibt
+- Zugberechnen in merhere Schritte aufgeteilt, damit es keinen Timeout mehr gibt
 - Warpstufen angepasst, damit es bissi schneller geht
