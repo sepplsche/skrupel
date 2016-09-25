@@ -38,6 +38,7 @@ if(@mysql_num_rows($result) != 1) {
                         rank INTEGER NOT NULL,
                         battlecount INTEGER NOT NULL,
                         battlewoncount INTEGER NOT NULL,
+                        battlelostcount INTEGER NOT NULL,
                         coloniestakencount INTEGER NOT NULL,
 						lj FLOAT NOT NULL,
             FOREIGN KEY (playerid) REFERENCES skrupel_user(id),

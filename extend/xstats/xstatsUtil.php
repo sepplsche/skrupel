@@ -118,7 +118,7 @@ function xstats_getAvailablePlayerIds($gameId) {
 
 /**Returns the max value of a column of a user*/
 function xstats_getMaxValueOfUser($gameId, $colName, $userId) {
-    $query = "SELECT MAX({$colName}) AS maxvalue FROM skrupel_xstats WHERE gameid=".$gameId." AND playerid=".$userId;
+    $query = "SELECT MAX({$colName}) AS 'maxvalue' FROM skrupel_xstats WHERE gameid=".$gameId." AND playerid=".$userId;
     $result = @mysql_query( $query );
     if( mysql_num_rows($result)>0 ) {
         $result = @mysql_fetch_array($result);
@@ -131,8 +131,8 @@ function xstats_getMaxValueOfUser($gameId, $colName, $userId) {
 
 /**Returns the max value of a column*/
 function xstats_getMaxValue($gameId, $colName) {
-    $query = "SELECT MAX({$colName}) AS maxvalue FROM skrupel_xstats WHERE gameid=$gameId";
-    $result = @mysql_query( $query );
+    $query = "SELECT MAX({$colName}) AS 'maxvalue' FROM skrupel_xstats WHERE gameid=$gameId";
+    $result = @mysql_query( $query ) or die($query.": ".mysql_error());
     $result = @mysql_fetch_array($result);
     if( $result == NULL ) {
         return( 0 );
@@ -143,7 +143,7 @@ function xstats_getMaxValue($gameId, $colName) {
 
 /**Returns the max turn for a passed game id*/
 function xstats_getMaxTurn( $gameId ) {
-    $query = "SELECT MAX(turn)AS maxturn FROM skrupel_xstats WHERE gameid='$gameId'";
+    $query = "SELECT MAX(turn)AS 'maxturn' FROM skrupel_xstats WHERE gameid='$gameId'";
     $maxTurn = @mysql_query($query) or die($query." : ".mysql_error());
     $maxTurn = @mysql_fetch_array($maxTurn);
     return $maxTurn['maxturn'];

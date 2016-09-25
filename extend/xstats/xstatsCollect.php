@@ -86,6 +86,12 @@ function xstats_collectAndStore( $sid, $battleCountArray,$battleCountWonArray,$c
         //passed arrays are 1-based!
             $statsBattleWonCount = $battleCountWonArray["$statsPlayerIndex"];
         }
+		
+		$statsBattleLostCount = $statsBattleCount - $statsBattleWonCount;
+		if($statsBattleLostCount < 0) {
+			$statsBattleLostCount = 0;
+		}
+
         $statsColoniesTakenCount = 0;
         if($coloniesTakenCountArray != NULL ) {
         //passed arrays are 1-based!
@@ -96,8 +102,8 @@ function xstats_collectAndStore( $sid, $battleCountArray,$battleCountWonArray,$c
         //passed arrays are 1-based!
             $lj = $ljArray["$statsPlayerIndex"];
         }
-        $query = "INSERT INTO skrupel_xstats (gameid,playerindex,playerid,turn,shipcount,freightercount,shipmasscount,planetcount,colonistcount,stationcount,stationcountstd,stationcountrep,stationcountdef,stationcountstdextra,lemincount,min1count,min2count,min3count,cantoxcount,minescount,factorycount,sumcargohold,usedcargohold,boxcount,rank,allplanetcount,battlecount,battlewoncount,coloniestakencount,lj) VALUES".
-            "($statsGameId,$statsPlayerIndex,$statsPlayerId,$statsTurn,$statsShipCount,$statsFreighterCount,$statsAccumulatedMass,$statsPlanetCount,$statsColonistsCount,$statsStarbaseCount,$statsStarbaseCountStandard,$statsStarbaseCountRepair,$statsStarbaseCountDefense,$statsStarbaseCountStandardWithExtra,$statsLeminCount,$statsMin1Count,$statsMin2Count,$statsMin3Count,$statsCantoxCount,$statsMinesCount,$statsFactoryCount,$statsCargoHold,$statsUsedCargoHold,$statsBoxCount,$statsRank,$statsAllPlanetCount,$statsBattleCount,$statsBattleWonCount,$statsColoniesTakenCount,$lj)";
+        $query = "INSERT INTO skrupel_xstats (gameid,playerindex,playerid,turn,shipcount,freightercount,shipmasscount,planetcount,colonistcount,stationcount,stationcountstd,stationcountrep,stationcountdef,stationcountstdextra,lemincount,min1count,min2count,min3count,cantoxcount,minescount,factorycount,sumcargohold,usedcargohold,boxcount,rank,allplanetcount,battlecount,battlewoncount,battlelostcount,coloniestakencount,lj) VALUES".
+            "($statsGameId,$statsPlayerIndex,$statsPlayerId,$statsTurn,$statsShipCount,$statsFreighterCount,$statsAccumulatedMass,$statsPlanetCount,$statsColonistsCount,$statsStarbaseCount,$statsStarbaseCountStandard,$statsStarbaseCountRepair,$statsStarbaseCountDefense,$statsStarbaseCountStandardWithExtra,$statsLeminCount,$statsMin1Count,$statsMin2Count,$statsMin3Count,$statsCantoxCount,$statsMinesCount,$statsFactoryCount,$statsCargoHold,$statsUsedCargoHold,$statsBoxCount,$statsRank,$statsAllPlanetCount,$statsBattleCount,$statsBattleWonCount,$statsBattleLostCount,$statsColoniesTakenCount,$lj)";
         @mysql_query($query) or die(mysql_error());
     }
     //check if the stats_ships table is empty

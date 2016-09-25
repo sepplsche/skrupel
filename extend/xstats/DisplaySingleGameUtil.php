@@ -147,7 +147,7 @@ function xstats_getDateDiff( $dateStart, $dateEnd) {
 function xstats_displayMaxValue( $gameId, $colName ) {
     $maxValue = xstats_getMaxValue( $gameId, $colName );
     $query = "SELECT * FROM skrupel_xstats WHERE gameid={$gameId} AND {$colName}={$maxValue}";
-    $result = @mysql_query( $query );
+    $result = @mysql_query( $query ) or die($query.": ".mysql_error());
     $result = @mysql_fetch_array($result);
     $playerId = $result['playerid'];
     $playerIndex = $result['playerindex'];
@@ -155,10 +155,10 @@ function xstats_displayMaxValue( $gameId, $colName ) {
     if( $colName == 'shipcount' ) {
         $displayStr=$displayStr."Gr&ouml;&szlig;te Flotte (Gesamt): <strong>".$maxValue."</strong> Schiffe ";
     }else if( $colName == 'freightercount' ) {
-            $displayStr=$displayStr."Gr&ouml;&szlig;te Flotte (Frachter): <strong>".$maxValue."</strong> Schiffe ";
-        }else if( $colName == 'shipcount-freightercount' ) {
-                $displayStr=$displayStr."Gr&ouml;&szlig;te Flotte (Bewaffnet): <strong>".$maxValue."</strong> Schiffe ";
-            }else if( $colName == 'planetcount' ) {
+        $displayStr=$displayStr."Gr&ouml;&szlig;te Flotte (Frachter): <strong>".$maxValue."</strong> Schiffe ";
+    }else if( $colName == 'shipcount-freightercount' ) {
+        $displayStr=$displayStr."Gr&ouml;&szlig;te Flotte (Bewaffnet): <strong>".$maxValue."</strong> Schiffe ";
+    }else if( $colName == 'planetcount' ) {
                     $displayStr=$displayStr."Gr&ouml;&szlig;tes Imperium: <strong>".$maxValue."</strong> Planeten ";
                 }else if( $colName == 'colonistcount' ) {
                         $displayStr=$displayStr."Gr&ouml;&szlig;te Bev&ouml;lkerung: <strong>".$maxValue."</strong> Kolonisten ";
