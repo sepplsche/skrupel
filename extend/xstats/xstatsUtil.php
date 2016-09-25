@@ -51,7 +51,7 @@ function xstats_getGameName( $gameId ) {
 function xstats_getAvailablePlayerIndicies($gameId) {
     $playerIndex = array();
     for($k=1; $k<=10; $k++) {
-        $playerId = @mysql_query("SELECT spieler_{$k} FROM skrupel_spiele WHERE id=$gameId") or die(mysql_error());
+        $playerId = @mysql_query("SELECT spieler_{$k} FROM skrupel_spiele WHERE id=$gameId") or die("SELECT spieler_{$k} FROM skrupel_spiele WHERE id=$gameId :".mysql_error());
         $playerId = @mysql_fetch_array($playerId);
         $playerId = $playerId['spieler_'.$k];
         if($playerId != 0) {
