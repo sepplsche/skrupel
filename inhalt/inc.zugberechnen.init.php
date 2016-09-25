@@ -38,4 +38,8 @@ if(count($sprachen) == 0) {
 }
 ///////////////////////////////Sprachinclude(nur die benoetigten) Ende
 
+srand((double)microtime()*1000000);
+mt_srand(time());
+$mt_randmax=mt_getrandmax();
+
 ?>
