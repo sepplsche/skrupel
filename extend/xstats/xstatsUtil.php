@@ -144,7 +144,7 @@ function xstats_getMaxValue($gameId, $colName) {
 /**Returns the max turn for a passed game id*/
 function xstats_getMaxTurn( $gameId ) {
     $query = "SELECT MAX(turn)AS maxturn FROM skrupel_xstats WHERE gameid='$gameId'";
-    $maxTurn = @mysql_query($query) or die(mysql_error());
+    $maxTurn = @mysql_query($query) or die($query." : ".mysql_error());
     $maxTurn = @mysql_fetch_array($maxTurn);
     return $maxTurn['maxturn'];
 }
