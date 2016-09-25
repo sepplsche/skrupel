@@ -124,7 +124,7 @@ if($schiffanzahl>0){
         }else{
             $schalter=0;
         }
-        if($schalter){
+        if($schalter && $count < 1000){
             $kreisel_anzahl++;
             $j=$i;
             $anzahl_schlange=0;
