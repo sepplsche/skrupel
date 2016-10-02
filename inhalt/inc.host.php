@@ -1091,17 +1091,19 @@ if ($datensaetze>=1) {
                         }
                     } else {
                         $ok=1;
-                        while ($ok==1) {
+						$count = 0;
+                        while ($ok==1 && $count < 1000) {
                             $x=mt_rand(50,$umfang-100);
                             $y=mt_rand(50,$umfang-100);
 
                             $ok=2;
                             $nachbarn=0;
-                            $zeiger2 = mysql_query("SELECT count(*) as total from $skrupel_planeten where sqrt( (x_pos-$x)*(x_pos-$x)+(x_pos-$x)*(x_pos-$x) )<=20 and spiel=$spiel");
+                            $zeiger2 = mysql_query("SELECT count(*) as total from $skrupel_planeten where sqrt( (x_pos-$x)*(x_pos-$x)+(y_pos-$y)*(y_pos-$y) )<=20 and spiel=$spiel");
                             $array = mysql_fetch_array($zeiger2);
                             $nachbarn=$array["total"];
 
                             if ($nachbarn>=1) {$ok=1;}
+							$count++;
                         }
                         $zeiger2 = mysql_query("UPDATE $skrupel_schiffe set kox=$x, koy=$y, zielx=0, ziely=0, flug=0, status=1  where id=$shid");
                         $zeiger_temp2 = mysql_query("UPDATE $skrupel_schiffe set flug=0,warp=0,zielx=0,ziely=0,zielid=0 where (flug=3 or flug=4) and zielid=$shid");
