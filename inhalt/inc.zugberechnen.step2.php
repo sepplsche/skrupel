@@ -124,7 +124,7 @@ if($schiffanzahl>0){
         }else{
             $schalter=0;
         }
-        if($schalter && $count < 1000){
+        if($schalter){
             $kreisel_anzahl++;
             $j=$i;
             $anzahl_schlange=0;
@@ -165,11 +165,12 @@ if($schiffanzahl>0){
         }
 		$count++;
 		error_log("Zähler: ".$count);
-    }while($schalter);
+    }while($schalter && $count < 1000);
 }
 //jetzt muessen wir nur noch die Moegliche seitenbuschel als Aeste an die Schlangen anhaengen
 //solange wie Schiff mit Schlange < -1 existiert{
 //hier tragen wir ein ob kleiner minus eins oder nicht
+if($count < 1000) {
 for($i=0; $i<$schiffanzahl;$i++) {
     if($feld_schlange[$i]<-1) {
         $j=$i;
@@ -183,6 +184,7 @@ for($i=0; $i<$schiffanzahl;$i++) {
             $j=array_search($feld_zielid[$j],$feld_shid);
         }while($feld_schlange[$j]<1);
     }
+}
 }
 //so jetzt schreiben wir noch die werte der Schlangenfelder auf die temp_verfolgt der DB und dann knnen wir danach sortiert auslesen
 //e
